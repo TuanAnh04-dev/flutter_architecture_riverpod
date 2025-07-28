@@ -64,8 +64,12 @@ class AuthNotifier extends StateNotifier<AuthState> {
     try {
       final dio = Dio();
       final response = await dio.post(
+<<<<<<< HEAD
         // 'http://10.234.5.124:7788/api/v2/login',
         '$baseUrl:7788/api/v2/login',
+=======
+        'http://xxx.xxx.xxx.xxx:7788/api/v2/login',
+>>>>>>> 206395a34f5f836c11c138be21a69e8935fda9ee
         data: {"user_name": email, "password": password},
       );
 
