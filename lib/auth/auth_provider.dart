@@ -7,6 +7,7 @@ import 'package:px1_mobile/auth/UserAuth.dart';
 import 'package:px1_mobile/core/contants/responseModel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:px1_mobile/core/contants/api.dart';
 
 class AuthState {
   final bool isLoading;
@@ -32,8 +33,8 @@ class AuthNotifier extends StateNotifier<AuthState> {
     if (userAuth != null) {
       dynamic user = jsonDecode(userAuth) as Map<String, dynamic>;
 
-      int ttl = int.parse(user['ttl']);
-      if (!isTokenExpired(ttl)) {
+      // int ttl = int.parse(user['ttl']);
+      if (!isTokenExpired(user['ttl'].toString())) {
         state = AuthState(
           isLoading: false,
           userAuth: UserAuth.fromJson(user),
@@ -47,11 +48,12 @@ class AuthNotifier extends StateNotifier<AuthState> {
     print('>>>>>>>>>>>>>>> Đã gọi vào load from local trong authProvider');
   }
 
-  bool isTokenExpired(int ttl) {
+  bool isTokenExpired(String ttl) {
+    int time = int.parse(ttl) as int;
     final now =
         DateTime.now().millisecondsSinceEpoch ~/
         1000; // thời gian hiện tại (giây)
-    return now > ttl;
+    return now > time;
   }
 
   Future<void> login({required String email, required String password}) async {
@@ -62,7 +64,8 @@ class AuthNotifier extends StateNotifier<AuthState> {
     try {
       final dio = Dio();
       final response = await dio.post(
-        'http://10.234.5.124:7788/api/v2/login',
+        // 'http://10.234.5.124:7788/api/v2/login',
+        '$baseUrl:7788/api/v2/login',
         data: {"user_name": email, "password": password},
       );
 
@@ -78,6 +81,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
         ).toJson();
 
         await prefs.setString('userAuth', jsonEncode(fakeUser));
+
         Fluttertoast.showToast(
           msg: "Đăng nhập thành công",
           toastLength: Toast.LENGTH_LONG, // hoặc Toast.LENGTH_LONG
@@ -98,6 +102,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
         );
       } else {
         final resApi = ResponseApi.fromJson(response.data);
+        print(">>>>Login: " + resApi.message + ", " + resApi.code.toString());
         Fluttertoast.showToast(
           msg: "Đăng nhập không thành công",
           toastLength: Toast.LENGTH_LONG, // hoặc Toast.LENGTH_LONG
@@ -115,7 +120,6 @@ class AuthNotifier extends StateNotifier<AuthState> {
         );
       }
     } catch (e) {
-      print(">>>>>>>>>>>LỖI NÈ<<<<<<<<<<<<<");
       Fluttertoast.showToast(
         msg: "Đăng nhập không thành công",
         toastLength: Toast.LENGTH_LONG, // hoặc Toast.LENGTH_LONG

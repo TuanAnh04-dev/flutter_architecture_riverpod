@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:px1_mobile/auth/auth_provider.dart';
+import 'package:px1_mobile/module/insurance/logic/insurance_category.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -25,10 +26,10 @@ class _SettingState extends ConsumerState<Setting> {
     }
   }
 
-  void _logout() {}
-
   @override
   Widget build(BuildContext context) {
+    final listen = ref.watch(insuranceCategoryProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Setting ', style: TextStyle(color: Colors.white)),
@@ -58,6 +59,18 @@ class _SettingState extends ConsumerState<Setting> {
               ref.read(authProvider.notifier).logout();
             },
             child: Text('Logout'),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              await ref.read(insuranceCategoryProvider.notifier).getList();
+            },
+            child: Text('Get List'),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              print(">>>>>>>>Check listen: " + listen.data.toString());
+            },
+            child: Text('listen'),
           ),
         ],
       ),

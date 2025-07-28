@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:px1_mobile/core/util/local_store.dart';
 import 'package:px1_mobile/route/app_route.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:toastification/toastification.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,15 +22,20 @@ class MyApp extends ConsumerWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
     final route = ref.watch(routeProvider);
-    return MaterialApp.router(
-      title: 'Px1',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        fontFamily: 'MyriadPro',
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+    return ToastificationWrapper(
+      child: MaterialApp.router(
+        title: 'Px1',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          fontFamily: 'MyriadPro',
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        ),
+        routerConfig: route,
+        
       ),
-      routerConfig: route,
     );
   }
 }

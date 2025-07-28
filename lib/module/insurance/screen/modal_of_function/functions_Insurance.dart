@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class FunctionsOfInsurance extends StatelessWidget {
   const FunctionsOfInsurance({super.key, required this.animation});
@@ -68,7 +69,11 @@ class FunctionsOfInsurance extends StatelessWidget {
                         height: 110,
                         width: 95,
                         child: InkWell(
-                          onTap: () => {print("Thiết lập")},
+                          onTap: () {
+                            print("Thiết lập");
+
+                            context.push('/list-insurance-category');
+                          },
                           child: Container(
                             padding: const EdgeInsets.only(
                               top: 8,

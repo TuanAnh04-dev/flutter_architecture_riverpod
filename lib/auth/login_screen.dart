@@ -67,7 +67,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     onPressed: () {
                       _submit();
                     },
-                    child: Text(AuthState == true ? '...' : 'Login'),
+                    child: Text('Login'),
                   ),
             authState.errorAuth != null
                 ? Container(
