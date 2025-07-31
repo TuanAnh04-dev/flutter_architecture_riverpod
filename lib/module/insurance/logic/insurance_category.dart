@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:px1_mobile/auth/auth_provider.dart';
 import 'package:px1_mobile/core/contants/api.dart';
 import 'package:px1_mobile/module/insurance/model/insurance_category.dart';
@@ -8,18 +10,26 @@ class InsuranceCategoryState {
   final bool isLoading;
   final List<InsuranceCategory> data;
   final String? error = null;
+  // final bool isReset;
 
-  InsuranceCategoryState({required this.isLoading, required this.data, error});
+  InsuranceCategoryState({
+    required this.isLoading,
+    required this.data,
+    error,
+    // required this.isReset,
+  });
 
   InsuranceCategoryState copyWith({
     dynamic data,
     bool? isLoading,
+    bool? isReset,
     String? error,
   }) {
     return InsuranceCategoryState(
       data: data ?? this.data,
       isLoading: isLoading ?? this.isLoading,
       error: error ?? this.error,
+      // isReset: isReset ?? this.isReset,
     );
   }
 }
@@ -27,13 +37,19 @@ class InsuranceCategoryState {
 class InsuranceCategoryNotifier extends Notifier<InsuranceCategoryState> {
   @override
   InsuranceCategoryState build() {
-    return InsuranceCategoryState(data: [], isLoading: false, error: null);
+    Future.microtask(() => getList());
+    return InsuranceCategoryState(
+      data: [],
+      isLoading: false,
+      error: null,
+      // isReset: false,
+    );
   }
 
-  Future<void> getList() async {
+  Future<bool> getList() async {
     state = state.copyWith(isLoading: true, error: null);
+
     try {
-      await Future.delayed(Duration(seconds: 5));
       // Lấy token nếu cần
       final listen = ref.watch(authProvider);
       final token = listen.userAuth!.accesstoken;
@@ -47,20 +63,66 @@ class InsuranceCategoryNotifier extends Notifier<InsuranceCategoryState> {
         final listData = data
             .map((i) => InsuranceCategory.fromJson(i))
             .toList();
-        // print(">>>>>>>>>>>Check: " + listData.toString());
-        state = state.copyWith(data: listData, isLoading: false);
+        state = state.copyWith(
+          data: listData,
+          isLoading: false,
+          // isReset: false,
+        );
+        return true;
       } else {
         state = state.copyWith(
           data: null,
           isLoading: false,
           error: response.data['message'],
         );
+        return false;
       }
     } catch (e) {
       state = state.copyWith(isLoading: false, error: 'Lỗi hệ thống');
       print('Call api has error: ' + e.toString());
+      return false;
     }
   }
+
+  Future<bool> addNew(dynamic data) async {
+    try {
+      print(">>>>>>>>Check data: $data");
+      final listen = ref.watch(authProvider);
+      final token = listen.userAuth!.accesstoken;
+      // Gọi API
+      final dio = Dio();
+      dio.options.headers['Authorization'] = 'Bearer $token';
+
+      String url = '$baseUrl/insurance-category';
+      final res = await dio.post(url, data: data);
+      if (res.statusCode == 201 && res.data["code"] == 201) {
+        Fluttertoast.showToast(
+          msg: "Thêm mới thành công",
+          toastLength: Toast.LENGTH_LONG, // hoặc Toast.LENGTH_LONG
+          gravity: ToastGravity.BOTTOM, // vị trí: TOP, CENTER, BOTTOM
+          backgroundColor: Colors.green[100],
+          textColor: Colors.green,
+          fontSize: 16.0,
+        );
+        await getList();
+        state = state.copyWith(
+          data: null,
+          isLoading: false,
+          error: res.data['message'],
+        );
+        return true;
+      }
+    } catch (e) {
+      state = state.copyWith(isLoading: false, error: 'Lỗi hệ thống');
+      print('Call api has error: ' + e.toString());
+      return false;
+    }
+    return false;
+  }
+
+  // resetFlag() {
+  //   state = state.copyWith(isReset: false);
+  // }
 }
 
 final insuranceCategoryProvider =

@@ -26,4 +26,7 @@ class InsuranceType {
     'code': code,
     'note': note,
   };
+  String toSearchString() {
+    return '$name $code'.toLowerCase();
+  }
 }

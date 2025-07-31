@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:px1_mobile/module/insurance/screen/modal_of_function/category_setting.dart';
 import 'package:px1_mobile/module/insurance/screen/modal_of_function/functions_Insurance.dart';
 
 class FunctionPage extends StatelessWidget {
@@ -207,7 +208,23 @@ class FunctionPage extends StatelessWidget {
                   height: 110,
                   width: 95,
                   child: InkWell(
-                    onTap: () => {print("Thiết lập danh mục tapped")},
+                    onTap: () {
+                      print("Thiết lập danh mục tapped");
+                      showGeneralDialog(
+                        context: context,
+                        barrierDismissible: true,
+                        barrierLabel: "Modal",
+                        // barrierColor: Colors.black.withOpacity(0.3),
+                        transitionDuration: const Duration(milliseconds: 300),
+                        pageBuilder: (_, __, ___) => const SizedBox.shrink(),
+                        transitionBuilder:
+                            (context, animation, secondaryAnimation, child) {
+                              return CategorySetting(
+                                animation: animation,
+                              ); // <-- truyền vào đây
+                            },
+                      );
+                    },
                     child: Container(
                       padding: const EdgeInsets.only(top: 8, left: 1, right: 1),
                       // color: Colors.teal[100],
@@ -685,7 +702,6 @@ class FunctionPage extends StatelessWidget {
                 ),
               ],
             ),
-
             SizedBox(height: 20),
             //Dòng 4
             Row(

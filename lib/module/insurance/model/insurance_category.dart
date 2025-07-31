@@ -44,4 +44,9 @@ class InsuranceCategory {
     'social_insurance': socialInsurance,
     'insurance_type': insuranceType.toJson(),
   };
+
+  String toSearchString() {
+    var type = insuranceType.name;
+    return '$name $code $type'.toLowerCase();
+  }
 }

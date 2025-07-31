@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:px1_mobile/auth/auth_provider.dart';
 import 'package:px1_mobile/auth/login_screen.dart';
+import 'package:px1_mobile/module/insurance/screen/category_setting.dart/insurance_information.dart';
+import 'package:px1_mobile/module/insurance/screen/insurance-category/add_sreen.dart';
 import 'package:px1_mobile/module/user/screen/list_user.dart';
 import 'package:px1_mobile/screen/Dashboard.dart';
 import 'package:px1_mobile/screen/Function.dart';
@@ -38,6 +40,10 @@ final routeProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/list-insurance-category',
         builder: (context, state) => const ListInsuranceCategory(),
+      ),
+      GoRoute(
+        path: '/insurance-information',
+        builder: (context, state) => const InsuranceInformation(),
       ),
     ],
   );

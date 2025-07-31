@@ -44,12 +44,11 @@ class AuthNotifier extends StateNotifier<AuthState> {
     } else {
       logout(); // Hết hạn thì xoá luôn
     }
-
     print('>>>>>>>>>>>>>>> Đã gọi vào load from local trong authProvider');
   }
 
   bool isTokenExpired(String ttl) {
-    int time = int.parse(ttl) as int;
+    int time = int.parse(ttl);
     final now =
         DateTime.now().millisecondsSinceEpoch ~/
         1000; // thời gian hiện tại (giây)
