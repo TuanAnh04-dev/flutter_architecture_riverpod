@@ -444,7 +444,7 @@ class _UpdateInsuranceCategoryState
                                     res = await _submit();
                                     if (res) {
                                       // ignore: use_build_context_synchronously
-                                      context.go('/list-insurance-category');
+                                      context.go('/insurance-information');
                                     }
                                   },
                                   child: Text(

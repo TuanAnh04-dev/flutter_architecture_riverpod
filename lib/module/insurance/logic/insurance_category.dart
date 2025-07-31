@@ -86,7 +86,6 @@ class InsuranceCategoryNotifier extends Notifier<InsuranceCategoryState> {
 
   Future<bool> addNew(dynamic data) async {
     try {
-      print(">>>>>>>>Check data: $data");
       final listen = ref.watch(authProvider);
       final token = listen.userAuth!.accesstoken;
       // Gọi API
@@ -114,15 +113,48 @@ class InsuranceCategoryNotifier extends Notifier<InsuranceCategoryState> {
       }
     } catch (e) {
       state = state.copyWith(isLoading: false, error: 'Lỗi hệ thống');
-      print('Call api has error: ' + e.toString());
+      Fluttertoast.showToast(
+        msg: "Không thể xóa",
+        toastLength: Toast.LENGTH_LONG, // hoặc Toast.LENGTH_LONG
+        gravity: ToastGravity.BOTTOM, // vị trí: TOP, CENTER, BOTTOM
+        backgroundColor: Colors.red[100],
+        textColor: Colors.red,
+        fontSize: 16.0,
+      );
       return false;
     }
     return false;
   }
 
-  // resetFlag() {
-  //   state = state.copyWith(isReset: false);
-  // }
+  Future<bool> delete(dynamic data) async {
+    final listen = ref.watch(authProvider);
+    final token = listen.userAuth!.accesstoken;
+    // Gọi API
+    final dio = Dio();
+    dio.options.headers['Authorization'] = 'Bearer $token';
+
+    String url = '$baseUrl/insurance-category/delete';
+    print(">>>>>>>Check: $data");
+    final res = await dio.post(url, data: data);
+    if (res.statusCode == 200 && res.data["code"] == 200) {
+      Fluttertoast.showToast(
+        msg: "Xóa thành công",
+        toastLength: Toast.LENGTH_LONG, // hoặc Toast.LENGTH_LONG
+        gravity: ToastGravity.BOTTOM, // vị trí: TOP, CENTER, BOTTOM
+        backgroundColor: Colors.green[100],
+        textColor: Colors.green,
+        fontSize: 16.0,
+      );
+      await getList();
+      state = state.copyWith(
+        data: null,
+        isLoading: false,
+        error: res.data['message'],
+      );
+      return true;
+    }
+    return false;
+  }
 }
 
 final insuranceCategoryProvider =

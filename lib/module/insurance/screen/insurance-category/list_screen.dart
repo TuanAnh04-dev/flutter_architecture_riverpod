@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:go_router/go_router.dart';
 import 'package:px1_mobile/module/insurance/logic/insurance_category.dart';
 import 'package:px1_mobile/module/insurance/logic/insurance_type.dart';
 import 'package:px1_mobile/module/insurance/model/insurance_category.dart';
@@ -180,7 +183,60 @@ class _ListInsuranceCategoryState extends ConsumerState<ListInsuranceCategory>
                                 motion: ScrollMotion(),
                                 children: [
                                   SlidableAction(
-                                    onPressed: (_) {},
+                                    onPressed: (_) {
+                                      final confirmData = data[index].name;
+                                      final deleteData = jsonEncode({
+                                        "id": data[index].id,
+                                        "reason": "Uesless",
+                                      });
+                                      // print(deleteData);
+                                      showDialog(
+                                        context: context,
+                                        builder: (ctx) => AlertDialog(
+                                          title: const Text("Xóa?"),
+                                          content: SizedBox(
+                                            width:
+                                                MediaQuery.of(
+                                                  context,
+                                                ).size.width *
+                                                0.7, // hoặc số cố định ví dụ 300
+                                            child: Text(
+                                              "Bạn có chắc muốn xóa '$confirmData' không?",
+                                              softWrap: true,
+                                              overflow: TextOverflow.visible,
+                                              maxLines: 3,
+                                            ),
+                                          ),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              style: TextButton.styleFrom(
+                                                backgroundColor:
+                                                    Colors.red[100],
+                                              ),
+                                              onPressed: () async {
+                                                if (await ref
+                                                    .read(
+                                                      insuranceCategoryProvider
+                                                          .notifier,
+                                                    )
+                                                    .delete(deleteData)) {
+                                                  Navigator.of(ctx).pop();
+                                                }
+                                              },
+                                              child: const Text("Xóa"),
+                                            ),
+                                            TextButton(
+                                              onPressed: () {
+                                                context.go(
+                                                  '/insurance-information',
+                                                );
+                                              },
+                                              child: const Text("Hủy"),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
                                     backgroundColor: Color.fromRGBO(
                                       254,
                                       73,
