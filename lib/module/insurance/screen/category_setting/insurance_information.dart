@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:px1_mobile/module/insurance/screen/insurance-category/list_screen.dart';
-import 'package:px1_mobile/module/insurance/screen/insurance_type/list_screen.dart';
+import 'package:px1_mobile/module/insurance/screen/category_setting/insurance-category/list_screen.dart';
+import 'package:px1_mobile/module/insurance/screen/category_setting/insurance_type/list_screen.dart';
 import 'package:px1_mobile/route/app_route.dart';
 
 class InsuranceInformation extends ConsumerStatefulWidget {

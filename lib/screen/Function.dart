@@ -1,12 +1,16 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:px1_mobile/module/insurance/screen/modal_of_function/category_setting.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:px1_mobile/module/insurance/screen/category_setting/category_setting.dart';
 import 'package:px1_mobile/module/insurance/screen/modal_of_function/functions_Insurance.dart';
+import 'package:px1_mobile/module/requirement/screen/modal_menu.dart';
 
-class FunctionPage extends StatelessWidget {
+class FunctionPage extends ConsumerWidget {
   const FunctionPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final locale = context.locale;
     var hscreen = MediaQuery.of(context).size.height;
     var wscreen = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -32,7 +36,7 @@ class FunctionPage extends StatelessWidget {
               children: [
                 SizedBox(width: 20),
                 Text(
-                  'Chức năng',
+                  'function'.tr(),
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 24,
@@ -95,7 +99,7 @@ class FunctionPage extends StatelessWidget {
                           ),
                           SizedBox(height: 10),
                           Text(
-                            'Dashboard',
+                            'dashboard'.tr(),
                             style: TextStyle(fontSize: 12),
                             textAlign: TextAlign.center,
                           ),
@@ -145,7 +149,7 @@ class FunctionPage extends StatelessWidget {
                           ),
                           SizedBox(height: 10),
                           Text(
-                            'Sơ đồ tổ chức',
+                            'organizational_chart'.tr(),
                             style: TextStyle(fontSize: 12),
                             textAlign: TextAlign.center,
                           ),
@@ -195,7 +199,7 @@ class FunctionPage extends StatelessWidget {
                           ),
                           SizedBox(height: 10),
                           Text(
-                            'Thiết lap hệ thống',
+                            'system_setting'.tr(),
                             style: TextStyle(fontSize: 12),
                             textAlign: TextAlign.center,
                           ),
@@ -261,7 +265,7 @@ class FunctionPage extends StatelessWidget {
                           ),
                           SizedBox(height: 10),
                           Text(
-                            'Thiết lập danh mục',
+                            'category_setting'.tr(),
                             style: TextStyle(fontSize: 12),
                             textAlign: TextAlign.center,
                           ),
@@ -318,7 +322,7 @@ class FunctionPage extends StatelessWidget {
                           ),
                           SizedBox(height: 10),
                           Text(
-                            'Thiết lập chính sách',
+                            'policy_setting'.tr(),
                             style: TextStyle(fontSize: 12),
                             textAlign: TextAlign.center,
                           ),
@@ -479,7 +483,6 @@ class FunctionPage extends StatelessWidget {
                 ),
               ],
             ),
-
             SizedBox(height: 20),
             //Dòng 3
             Row(
@@ -489,7 +492,23 @@ class FunctionPage extends StatelessWidget {
                   height: 110,
                   width: 95,
                   child: InkWell(
-                    onTap: () => {print("Quản lý yêu cầu tapped")},
+                    onTap: () {
+                      print("Quản lý yêu cầu tapped");
+                      showGeneralDialog(
+                        context: context,
+                        barrierDismissible: true,
+                        barrierLabel: "Modal",
+                        // barrierColor: Colors.black.withOpacity(0.3),
+                        transitionDuration: const Duration(milliseconds: 300),
+                        pageBuilder: (_, __, ___) => const SizedBox.shrink(),
+                        transitionBuilder:
+                            (context, animation, secondaryAnimation, child) {
+                              return LateAndEarlyMenu(
+                                animation: animation,
+                              ); // <-- truyền vào đây
+                            },
+                      );
+                    },
                     child: Container(
                       padding: const EdgeInsets.only(top: 8, left: 1, right: 1),
                       // color: Colors.teal[100],
@@ -641,7 +660,7 @@ class FunctionPage extends StatelessWidget {
                           ),
                           SizedBox(height: 10),
                           Text(
-                            'Quản lý bảo hiểm',
+                            'insurance_setting'.tr(),
                             style: TextStyle(fontSize: 12),
                             textAlign: TextAlign.center,
                           ),

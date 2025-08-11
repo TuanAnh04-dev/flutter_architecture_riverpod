@@ -38,6 +38,7 @@ class InsuranceTypeNotifier extends Notifier<InsuranceTypeState> {
       final res = await dio.get('$baseUrl/insurance-type');
       if (res.statusCode == 200 && res.data['code'] == 200) {
         List<dynamic> data = res.data['data'];
+
         final listData = data.map((i) => InsuranceType.fromJson(i)).toList();
         state = state.copyWith(data: listData, error: null, isLoading: false);
       } else {

@@ -1,0 +1,17 @@
+{
+  "welcome": "Welcome",
+  "login": "Login",
+  "logout": "Logout",
+  "dashboard": "Dashboard",
+  "function": "Function",
+  "organizational_chart": "Organizational chart",
+  "system_setting": "System setting",
+  "category_setting": "Category setting",
+  "policy_setting": "Policy setting",
+  "human_resource_setting": "Human resource setting",
+  "insurance_setting": "Insurance setting",
+  "insurance_setting_setup": "Setup",
+  "insurance_setting_manage": "Manage",
+  "insurance_setting_report": "Report",
+  "insurance_setting_tracking": "Tracking"
+}

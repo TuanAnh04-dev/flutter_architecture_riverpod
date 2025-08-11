@@ -79,7 +79,9 @@ class AuthNotifier extends StateNotifier<AuthState> {
         ).toJson();
 
         await prefs.setString('userAuth', jsonEncode(fakeUser));
-
+        await prefs.setString('work_mail', jsonEncode(email.split('.')[0]));
+        final workMail = prefs.getString('work_mail');
+        // print("Check work email: " + workMail.toString());
         Fluttertoast.showToast(
           msg: "Đăng nhập thành công",
           toastLength: Toast.LENGTH_LONG, // hoặc Toast.LENGTH_LONG
@@ -90,7 +92,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
         );
         state = AuthState(
           userAuth: UserAuth(
-            email: email,
+            email: workMail,
             accesstoken: userAuth.accesstoken,
             refreshtoken: userAuth.refreshtoken,
             ttl: userAuth.ttl,
@@ -137,7 +139,9 @@ class AuthNotifier extends StateNotifier<AuthState> {
   }
 
   void logout() async {
+    final prefs = await SharedPreferences.getInstance();
     await Future.delayed(Duration(seconds: 2));
+    await prefs.remove('userAuth');
     state = const AuthState(isLoading: false, userAuth: null);
   }
 }

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
+import 'package:px1_mobile/core/language/language_logic.dart';
 import 'package:px1_mobile/module/user/screen/list_user.dart';
 import 'package:px1_mobile/screen/Dashboard.dart';
 import 'package:px1_mobile/screen/Function.dart';
 import 'package:px1_mobile/screen/Setting.dart';
 
-class Homepage extends StatelessWidget {
+class Homepage extends ConsumerWidget {
   Homepage({super.key});
   final PersistentTabController _controller = PersistentTabController(
     initialIndex: 0,
@@ -44,8 +46,10 @@ class Homepage extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    // final locale = ref.watch(localeProvider);
     return PersistentTabView(
+      // key: ValueKey(locale.languageCode),
       context,
       screens: _buildScreens(),
       items: _navBarsItems(),

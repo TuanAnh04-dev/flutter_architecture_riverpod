@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:px1_mobile/module/insurance/logic/insurance_category.dart';
 import 'package:px1_mobile/module/insurance/logic/insurance_type.dart';
-import 'package:px1_mobile/module/insurance/model/insurance_category.dart';
 import 'package:px1_mobile/module/insurance/model/insurance_type.dart';
-import 'package:px1_mobile/module/insurance/screen/insurance-category/add_sreen.dart';
 
 class ListInsuranceType extends ConsumerStatefulWidget {
   const ListInsuranceType({super.key});
@@ -99,27 +96,27 @@ class _ListInsuranceTypeState extends ConsumerState<ListInsuranceType> {
                             ),
                           ),
                           onPressed: () {
-                            showGeneralDialog(
-                              context: context,
-                              barrierDismissible: true,
-                              barrierLabel: "Modal",
-                              transitionDuration: const Duration(
-                                milliseconds: 300,
-                              ),
-                              pageBuilder: (_, __, ___) =>
-                                  const SizedBox.shrink(),
-                              transitionBuilder:
-                                  (
-                                    context,
-                                    animation,
-                                    secondaryAnimation,
-                                    child,
-                                  ) {
-                                    return AddNewInsuranceCategory(
-                                      animation: animation,
-                                    );
-                                  },
-                            );
+                            // showGeneralDialog(
+                            //   context: context,
+                            //   barrierDismissible: true,
+                            //   barrierLabel: "Modal",
+                            //   transitionDuration: const Duration(
+                            //     milliseconds: 300,
+                            //   ),
+                            //   pageBuilder: (_, __, ___) =>
+                            //       const SizedBox.shrink(),
+                            //   transitionBuilder:
+                            //       (
+                            //         context,
+                            //         animation,
+                            //         secondaryAnimation,
+                            //         child,
+                            //       ) {
+                            //         return AddNewInsuranceCategory(
+                            //           animation: animation,
+                            //         );
+                            //       },
+                            // );
                           },
                           child: Text(
                             'Thêm mới',

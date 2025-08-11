@@ -5,10 +5,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:go_router/go_router.dart';
 import 'package:px1_mobile/module/insurance/logic/insurance_category.dart';
-import 'package:px1_mobile/module/insurance/logic/insurance_type.dart';
 import 'package:px1_mobile/module/insurance/model/insurance_category.dart';
-import 'package:px1_mobile/module/insurance/screen/insurance-category/add_sreen.dart';
-import 'package:px1_mobile/module/insurance/screen/insurance-category/update_screen.dart';
+import 'package:px1_mobile/module/insurance/screen/category_setting/insurance-category/add_sreen.dart';
+import 'package:px1_mobile/module/insurance/screen/category_setting/insurance-category/update_screen.dart';
 
 class ListInsuranceCategory extends ConsumerStatefulWidget {
   const ListInsuranceCategory({super.key});

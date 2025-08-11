@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class FunctionsOfInsurance extends StatelessWidget {
-  const FunctionsOfInsurance({super.key, required this.animation});
+class LateAndEarlyMenu extends StatelessWidget {
+  const LateAndEarlyMenu({super.key, required this.animation});
   final Animation<double> animation;
   @override
   Widget build(BuildContext context) {
@@ -53,7 +53,7 @@ class FunctionsOfInsurance extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 15.0),
                     child: Text(
                       textAlign: TextAlign.center,
-                      'Quản lý bảo hiểm',
+                      'Quản lý yêu cầu',
                       style: TextStyle(fontSize: 20),
                     ),
                   ),
@@ -70,9 +70,8 @@ class FunctionsOfInsurance extends StatelessWidget {
                         width: 95,
                         child: InkWell(
                           onTap: () {
-                            print("Thiết lập");
-
-                            context.push('/insurance-setting');
+                            print("Đi trễ và về sớm");
+                            context.push('/late-and-early');
                           },
                           child: Container(
                             padding: const EdgeInsets.only(
@@ -114,7 +113,7 @@ class FunctionsOfInsurance extends StatelessWidget {
                                 ),
                                 SizedBox(height: 10),
                                 Text(
-                                  'Thiết lập',
+                                  'Đi trễ & về sớm',
                                   style: TextStyle(fontSize: 12),
                                   textAlign: TextAlign.center,
                                 ),

@@ -1,0 +1,19 @@
+{
+  "welcome": "Chào mừng",
+  "login": "Đăng nhập",
+  "logout": "Đăng xuất",
+  "dashboard": "Tổng quan",
+  "function": "Chức năng",
+  "organizational_chart": "Sơ đồ tổ chức",
+  "system_setting": "Thiết lập hệ thống",
+  "category_setting": "Thiết lập danh mục",
+  "policy_setting": "Thiết lập chính sách",
+  "human_resource_setting": "Thiết lập nhân sự",
+  "insurance_setting": "Thiết lập bảo hiểm",
+  "insurance_setting_setup": "Thiết lập",
+  "insurance_setting_manage": "Quản lý",
+  "insurance_setting_report": "Báo cáo",
+  "insurance_setting_tracking": "Theo dõi đóng"
+
+}
+  

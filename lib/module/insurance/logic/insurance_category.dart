@@ -38,12 +38,7 @@ class InsuranceCategoryNotifier extends Notifier<InsuranceCategoryState> {
   @override
   InsuranceCategoryState build() {
     Future.microtask(() => getList());
-    return InsuranceCategoryState(
-      data: [],
-      isLoading: false,
-      error: null,
-      // isReset: false,
-    );
+    return InsuranceCategoryState(data: [], isLoading: false, error: null);
   }
 
   Future<bool> getList() async {
@@ -60,6 +55,7 @@ class InsuranceCategoryNotifier extends Notifier<InsuranceCategoryState> {
       final response = await dio.get(url);
       if (response.statusCode == 200 && response.data['code'] == 200) {
         List<dynamic> data = response.data['data']; // Tùy theo cấu trúc
+        print(">>>>>>>>Check data in logic before parse: $data");
         final listData = data
             .map((i) => InsuranceCategory.fromJson(i))
             .toList();
@@ -132,9 +128,7 @@ class InsuranceCategoryNotifier extends Notifier<InsuranceCategoryState> {
     // Gọi API
     final dio = Dio();
     dio.options.headers['Authorization'] = 'Bearer $token';
-
     String url = '$baseUrl/insurance-category/delete';
-    print(">>>>>>>Check: $data");
     final res = await dio.post(url, data: data);
     if (res.statusCode == 200 && res.data["code"] == 200) {
       Fluttertoast.showToast(

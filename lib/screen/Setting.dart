@@ -1,9 +1,10 @@
 import 'dart:convert';
-
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:px1_mobile/auth/auth_provider.dart';
+import 'package:px1_mobile/core/language/language_logic.dart';
 import 'package:px1_mobile/module/insurance/logic/insurance_category.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -29,6 +30,8 @@ class _SettingState extends ConsumerState<Setting> {
   @override
   Widget build(BuildContext context) {
     final listen = ref.watch(insuranceCategoryProvider);
+    // final locale = ref.watch(localeProvider);
+    // final localeNotifier = ref.read(localeProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(
@@ -58,7 +61,7 @@ class _SettingState extends ConsumerState<Setting> {
               printUserAuth();
               ref.read(authProvider.notifier).logout();
             },
-            child: Text('Logout'),
+            child: Text('logout'.tr()),
           ),
           ElevatedButton(
             onPressed: () async {
@@ -71,6 +74,31 @@ class _SettingState extends ConsumerState<Setting> {
               print(">>>>>>>>Check listen: " + listen.data.toString());
             },
             child: Text('listen'),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              DropdownButton(
+                value: context.locale.languageCode,
+                items: [
+                  DropdownMenuItem(value: 'en', child: Text('English')),
+                  DropdownMenuItem(value: 'vi', child: Text('Việt Nam')),
+                ],
+                onChanged: (String? value) async {
+                  if (value != null) {
+                    if (value == 'en') {
+                      await context.setLocale(Locale('en'));
+                      // localeNotifier.changeLocale(const Locale('en'));
+                      print("Change to English");
+                    } else {
+                      await context.setLocale(Locale('vi'));
+                      // localeNotifier.changeLocale(const Locale('vi'));
+                      print("Change to Vietnamese");
+                    }
+                  }
+                },
+              ),
+            ],
           ),
         ],
       ),

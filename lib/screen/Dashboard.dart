@@ -6,6 +6,7 @@ class Dashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
         title: Text('Dashboard', style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.deepPurple,
