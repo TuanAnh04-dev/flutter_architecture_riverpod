@@ -1,34 +1,40 @@
 import 'dart:convert';
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
+import 'package:px1_mobile/module/category_setting/logic/requirement/leave_compassion_type.dart';
 import 'package:px1_mobile/module/requirement/logic/late_and_early.dart';
+import 'package:px1_mobile/module/requirement/logic/leave_compasion.dart';
 import 'package:px1_mobile/module/requirement/model/late_and_early.dart';
+import 'package:px1_mobile/module/requirement/model/leave_compassion.dart';
+import 'package:px1_mobile/module/requirement/screen/late_and_early/add_screen_my_request.dart';
 
-class ListAllRequest extends ConsumerStatefulWidget {
-  const ListAllRequest({super.key});
+class ListMyRequestLeaveCompassion extends ConsumerStatefulWidget {
+  const ListMyRequestLeaveCompassion({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _ListAllRequestState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _ListMyRequestLeaveCompassionState();
 }
 
-class _ListAllRequestState extends ConsumerState<ListAllRequest>
+class _ListMyRequestLeaveCompassionState
+    extends ConsumerState<ListMyRequestLeaveCompassion>
     with TickerProviderStateMixin {
   final TextEditingController _searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(lateAndEarlyProvider);
+    final state = ref.watch(leaveCompassionProvider);
 
-    List<LateAndEarly> filterList = [];
+    List<LeaveCompassion> filterList = [];
     final query = _searchController.text.trim().toLowerCase();
 
     filterList = query.isEmpty
-        ? state.data
-        : state.data
+        ? state.myData
+        : state.myData
               .where(
                 (item) => item.toSearchString().toLowerCase().contains(query),
               )
@@ -63,8 +69,8 @@ class _ListAllRequestState extends ConsumerState<ListAllRequest>
                           onChanged: (value) {
                             setState(() {
                               filterList = query.isEmpty
-                                  ? state.data
-                                  : state.data
+                                  ? state.myData
+                                  : state.myData
                                         .where(
                                           (item) => item
                                               .toSearchString()
@@ -110,7 +116,29 @@ class _ListAllRequestState extends ConsumerState<ListAllRequest>
                               1,
                             ),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            showGeneralDialog(
+                              context: context,
+                              barrierDismissible: true,
+                              barrierLabel: "Modal",
+                              transitionDuration: const Duration(
+                                milliseconds: 300,
+                              ),
+                              pageBuilder: (_, __, ___) =>
+                                  const SizedBox.shrink(),
+                              transitionBuilder:
+                                  (
+                                    context,
+                                    animation,
+                                    secondaryAnimation,
+                                    child,
+                                  ) {
+                                    return AddNewMyRequest(
+                                      animation: animation,
+                                    );
+                                  },
+                            );
+                          },
                           child: Text(
                             'Thêm mới',
                             style: TextStyle(color: Colors.white),
@@ -124,7 +152,7 @@ class _ListAllRequestState extends ConsumerState<ListAllRequest>
                   child: ListView.builder(
                     itemCount: filterList.length,
                     itemBuilder: (context, index) {
-                      List<LateAndEarly> data = filterList;
+                      List<LeaveCompassion> data = filterList;
                       return data == [] && state.isLoading == true
                           ? CircularProgressIndicator()
                           : Column(
@@ -217,9 +245,7 @@ class _ListAllRequestState extends ConsumerState<ListAllRequest>
                                                         top: 4,
                                                       ),
                                                   child: Text(
-                                                    data[index].employee.isEmpty
-                                                        ? ''
-                                                        : '${data[index].employee[0].lastName} ${data[index].employee[0].middleName} ${data[index].employee[0].firstName}',
+                                                    '${data[index].employee.lastName} ${data[index].employee.middleName} ${data[index].employee.firstName}',
                                                     style: TextStyle(
                                                       fontSize: 20,
                                                       height: 1,

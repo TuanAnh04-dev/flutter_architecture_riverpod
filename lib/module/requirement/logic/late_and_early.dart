@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:px1_mobile/auth/auth_provider.dart';
 import 'package:px1_mobile/core/contants/api.dart';
 import 'package:px1_mobile/module/requirement/model/late_and_early.dart';
@@ -60,6 +62,7 @@ class LateAndEarlyNotifier extends Notifier<LateAndEarlyState> {
       List<LateAndEarly> myReq = [];
       List<LateAndEarly> ortherReq = [];
       workMail = workMail!.split('.')[0];
+      workMail = workMail.replaceAll('"', '');
 
       // Gọi API
       final dio = Dio();
@@ -70,21 +73,18 @@ class LateAndEarlyNotifier extends Notifier<LateAndEarlyState> {
         List<dynamic> data = response.data['data']; // Tùy theo cấu trúc
         // print(data);
         final listData = data.map((i) => LateAndEarly.fromJson(i)).toList();
-
-        listData.forEach((e) {
+        for (var e in listData) {
           if (e.employee[0].workEmail == workMail) {
             myReq.add(e);
           } else {
             ortherReq.add(e);
           }
-        });
-
+        }
         state = state.copyWith(
           data: listData,
           myData: myReq,
           ortherData: ortherReq,
           isLoading: false,
-          // isReset: false,
         );
         return true;
       } else {
@@ -98,6 +98,110 @@ class LateAndEarlyNotifier extends Notifier<LateAndEarlyState> {
     } catch (e) {
       state = state.copyWith(isLoading: false, error: 'Lỗi hệ thống');
       print('Call api has error: ' + e.toString());
+      return false;
+    }
+  }
+
+  Future<bool> addRequest(dynamic data) async {
+    try {
+      final listen = ref.watch(authProvider);
+      final token = listen.userAuth!.accesstoken;
+      // Gọi API
+      final dio = Dio();
+      dio.options.headers['Authorization'] = 'Bearer $token';
+      String url = '$baseUrl/late-and-early';
+
+      final res = await dio.post(url, data: data);
+      if (res.statusCode == 201 && res.data["code"] == 201) {
+        Fluttertoast.showToast(
+          msg: "Thêm yêu cầu thành công",
+          toastLength: Toast.LENGTH_LONG, // hoặc Toast.LENGTH_LONG
+          gravity: ToastGravity.BOTTOM, // vị trí: TOP, CENTER, BOTTOM
+          backgroundColor: Colors.green[100],
+          textColor: Colors.green,
+          fontSize: 16.0,
+        );
+        await getList();
+        state = state.copyWith(
+          data: null,
+          isLoading: false,
+          error: res.data['message'],
+        );
+        return true;
+      } else {
+        Fluttertoast.showToast(
+          msg: "Thêm yêu cầu thất bại",
+          toastLength: Toast.LENGTH_LONG, // hoặc Toast.LENGTH_LONG
+          gravity: ToastGravity.BOTTOM, // vị trí: TOP, CENTER, BOTTOM
+          backgroundColor: Colors.red[100],
+          textColor: Colors.red,
+          fontSize: 16.0,
+        );
+        return false;
+      }
+    } catch (e) {
+      state = state.copyWith(isLoading: false, error: 'Lỗi hệ thống');
+      print(e);
+      Fluttertoast.showToast(
+        msg: "Thất bại!",
+        toastLength: Toast.LENGTH_LONG, // hoặc Toast.LENGTH_LONG
+        gravity: ToastGravity.BOTTOM, // vị trí: TOP, CENTER, BOTTOM
+        backgroundColor: Colors.red[100],
+        textColor: Colors.red,
+        fontSize: 16.0,
+      );
+      return false;
+    }
+  }
+
+  Future<bool> deleteRequest(dynamic data) async {
+    try {
+      final listen = ref.watch(authProvider);
+      final token = listen.userAuth!.accesstoken;
+      // Gọi API
+      final dio = Dio();
+      dio.options.headers['Authorization'] = 'Bearer $token';
+      String url = '$baseUrl/late-and-early/delete';
+
+      final res = await dio.post(url, data: data);
+      if (res.statusCode == 200 && res.data["code"] == 200) {
+        Fluttertoast.showToast(
+          msg: "Xóa yêu cầu thành công",
+          toastLength: Toast.LENGTH_LONG, // hoặc Toast.LENGTH_LONG
+          gravity: ToastGravity.BOTTOM, // vị trí: TOP, CENTER, BOTTOM
+          backgroundColor: Colors.green[100],
+          textColor: Colors.green,
+          fontSize: 16.0,
+        );
+        await getList();
+        state = state.copyWith(
+          data: null,
+          isLoading: false,
+          error: res.data['message'],
+        );
+        return true;
+      } else {
+        Fluttertoast.showToast(
+          msg: "Xóa yêu cầu thất bại",
+          toastLength: Toast.LENGTH_LONG, // hoặc Toast.LENGTH_LONG
+          gravity: ToastGravity.BOTTOM, // vị trí: TOP, CENTER, BOTTOM
+          backgroundColor: Colors.red[100],
+          textColor: Colors.red,
+          fontSize: 16.0,
+        );
+        return false;
+      }
+    } catch (e) {
+      state = state.copyWith(isLoading: false, error: 'Lỗi hệ thống');
+      print(e);
+      Fluttertoast.showToast(
+        msg: "Thất bại!",
+        toastLength: Toast.LENGTH_LONG, // hoặc Toast.LENGTH_LONG
+        gravity: ToastGravity.BOTTOM, // vị trí: TOP, CENTER, BOTTOM
+        backgroundColor: Colors.red[100],
+        textColor: Colors.red,
+        fontSize: 16.0,
+      );
       return false;
     }
   }

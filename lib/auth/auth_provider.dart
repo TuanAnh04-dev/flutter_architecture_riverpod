@@ -60,6 +60,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
     state = const AuthState(isLoading: true, userAuth: null);
     // Giả lập gọi API
     await Future.delayed(const Duration(seconds: 2));
+
     try {
       final dio = Dio();
       final response = await dio.post(
@@ -69,7 +70,6 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
       if (response.statusCode == 200 && response.statusMessage == "OK") {
         final userAuth = UserAuth.fromJson(response.data['message']);
-
         Map<String, dynamic> fakeUser = UserAuth(
           email: email,
           accesstoken: userAuth.accesstoken,
@@ -77,11 +77,10 @@ class AuthNotifier extends StateNotifier<AuthState> {
           ttl: userAuth.ttl,
           tokenType: userAuth.tokenType,
         ).toJson();
-
         await prefs.setString('userAuth', jsonEncode(fakeUser));
         await prefs.setString('work_mail', jsonEncode(email.split('.')[0]));
         final workMail = prefs.getString('work_mail');
-        // print("Check work email: " + workMail.toString());
+
         Fluttertoast.showToast(
           msg: "Đăng nhập thành công",
           toastLength: Toast.LENGTH_LONG, // hoặc Toast.LENGTH_LONG

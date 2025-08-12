@@ -3,9 +3,9 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:px1_mobile/module/base/logic/my_profile.dart';
-import 'package:px1_mobile/module/insurance/logic/insurance_category.dart';
-import 'package:px1_mobile/module/insurance/logic/insurance_type.dart';
+import 'package:px1_mobile/module/requirement/logic/late_and_early.dart';
 
 class AddNewMyRequest extends ConsumerStatefulWidget {
   const AddNewMyRequest({super.key, required this.animation});
@@ -62,34 +62,34 @@ class _AddNewMyRequestState extends ConsumerState<AddNewMyRequest> {
   }
 
   final List<Map<String, String>> options = [
-    {'id': 'early', 'name': 'Đi sớm'},
-    {'id': 'late', 'name': 'Về Muộn'},
+    {'id': 'early', 'name': 'Về sớm'},
+    {'id': 'late', 'name': 'Đi muộn'},
   ];
 
   @override
   Widget build(BuildContext context) {
-    final myId = ref.watch(MyProfileProvider).data!.id;
+    final myId = ref.watch(myProfileProvider).data;
 
     final hscreen = MediaQuery.of(context).size.height;
     final wscreen = MediaQuery.of(context).size.width;
     final curved = CurvedAnimation(
       parent: widget.animation,
       curve: Curves.easeOut,
+      reverseCurve: Curves.easeOut,
     );
 
-    Future<bool> _submit() async {
+    Future<bool> submit() async {
       Map<String, dynamic> data = {
-        "notes": _noteController.text,
+        "note": _noteController.text,
         "category": selectedType,
         "required_time": selectedStringTime,
         "required_date": selectedStringDate,
-        "id": myId,
+        "sub_employee": [myId!.id],
       };
       String jsonString = jsonEncode(data);
-      print("From UI: $jsonString");
-      // return await ref
-      //     .read(insuranceCategoryProvider.notifier)
-      //     .addNew(jsonString);
+      final check = ref
+          .read(lateAndEarlyProvider.notifier)
+          .addRequest(jsonString);
       return true;
     }
 
@@ -315,13 +315,13 @@ class _AddNewMyRequestState extends ConsumerState<AddNewMyRequest> {
                                       1,
                                     ),
                                   ),
-                                  onPressed: () {
-                                    // res = await _submit();
-                                    // if (res) {
-                                    //   // ignore: use_build_context_synchronously
-                                    //   context.go('/insurance-information');
-                                    // }
-                                    _submit();
+                                  onPressed: () async {
+                                    final res = await submit();
+
+                                    if (res == true) {
+                                      // ignore: use_build_context_synchronously
+                                      context.pop();
+                                    }
                                   },
                                   child: Text(
                                     'Thêm mới',
@@ -336,7 +336,7 @@ class _AddNewMyRequestState extends ConsumerState<AddNewMyRequest> {
                                     backgroundColor: Colors.grey[600],
                                   ),
                                   onPressed: () {
-                                    _submit();
+                                    // final res = submit();
                                   },
                                   child: Text(
                                     'Thêm mới',

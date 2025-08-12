@@ -6,15 +6,15 @@ import 'package:px1_mobile/module/requirement/screen/late_and_early/list_all_req
 import 'package:px1_mobile/module/requirement/screen/late_and_early/list_my_request.dart';
 import 'package:px1_mobile/module/requirement/screen/late_and_early/list_orther_request.dart';
 
-class LateAndEarlyManager extends ConsumerStatefulWidget {
-  const LateAndEarlyManager({super.key});
+class LeaveCompassionManager extends ConsumerStatefulWidget {
+  const LeaveCompassionManager({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
-      _LateAndEarlyManagerState();
+      _LeaveCompassionManagerState();
 }
 
-class _LateAndEarlyManagerState extends ConsumerState<LateAndEarlyManager>
+class _LeaveCompassionManagerState extends ConsumerState<LeaveCompassionManager>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   @override
@@ -40,7 +40,7 @@ class _LateAndEarlyManagerState extends ConsumerState<LateAndEarlyManager>
             ref.read(routeProvider).pop(); // Quay lại màn hình trước
           },
         ),
-        title: Text('Đi trễ & về sớm'),
+        title: Text('Nghỉ việc riêng'),
         centerTitle: true,
         actions: [
           IconButton(
