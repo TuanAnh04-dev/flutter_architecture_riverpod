@@ -18,10 +18,7 @@ void main() async {
       supportedLocales: const [Locale('en'), Locale('vi')],
       fallbackLocale: const Locale('vi'),
       path: 'assets/lang',
-      child: ProviderScope(
-        overrides: [sharedPreferencesProvider.overrideWithValue(prefs)],
-        child: MyApp(),
-      ),
+      child: ProviderScope(overrides: [sharedPreferencesProvider.overrideWithValue(prefs)], child: MyApp()),
     ),
   );
 }
@@ -45,7 +42,6 @@ class MyApp extends ConsumerWidget {
         ),
         routerConfig: route,
         locale: context.locale,
-        // locale: ref.watch(localeProvider),
         supportedLocales: const [Locale('vi'), Locale('en')],
         localizationsDelegates: context.localizationDelegates,
       ),

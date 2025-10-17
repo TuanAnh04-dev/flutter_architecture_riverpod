@@ -12,8 +12,7 @@ class AddNewMyRequest extends ConsumerStatefulWidget {
   final Animation<double> animation;
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _AddNewMyRequestState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _AddNewMyRequestState();
 }
 
 class _AddNewMyRequestState extends ConsumerState<AddNewMyRequest> {
@@ -30,10 +29,7 @@ class _AddNewMyRequestState extends ConsumerState<AddNewMyRequest> {
       context: context,
       initialTime: TimeOfDay(hour: 00, minute: 00),
       builder: (BuildContext context, Widget? child) {
-        return MediaQuery(
-          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
-          child: child!,
-        );
+        return MediaQuery(data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true), child: child!);
       },
     );
     String formatTimeOfDay(TimeOfDay time) {
@@ -72,11 +68,7 @@ class _AddNewMyRequestState extends ConsumerState<AddNewMyRequest> {
 
     final hscreen = MediaQuery.of(context).size.height;
     final wscreen = MediaQuery.of(context).size.width;
-    final curved = CurvedAnimation(
-      parent: widget.animation,
-      curve: Curves.easeOut,
-      reverseCurve: Curves.easeOut,
-    );
+    final curved = CurvedAnimation(parent: widget.animation, curve: Curves.easeOut, reverseCurve: Curves.easeOut);
 
     Future<bool> submit() async {
       Map<String, dynamic> data = {
@@ -87,17 +79,12 @@ class _AddNewMyRequestState extends ConsumerState<AddNewMyRequest> {
         "sub_employee": [myId!.id],
       };
       String jsonString = jsonEncode(data);
-      final check = ref
-          .read(lateAndEarlyProvider.notifier)
-          .addRequest(jsonString);
+      final check = ref.read(lateAndEarlyProvider.notifier).addRequest(jsonString);
       return true;
     }
 
     return SlideTransition(
-      position: Tween<Offset>(
-        begin: const Offset(0, 1),
-        end: Offset.zero,
-      ).animate(curved),
+      position: Tween<Offset>(begin: const Offset(0, 1), end: Offset.zero).animate(curved),
       child: Material(
         type: MaterialType.transparency,
         child: Align(
@@ -107,10 +94,7 @@ class _AddNewMyRequestState extends ConsumerState<AddNewMyRequest> {
             padding: const EdgeInsets.all(4),
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
-              ),
+              borderRadius: const BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
               boxShadow: [
                 BoxShadow(
                   color: Colors.grey.withOpacity(0.5),
@@ -135,11 +119,7 @@ class _AddNewMyRequestState extends ConsumerState<AddNewMyRequest> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 15.0),
-                    child: Text(
-                      textAlign: TextAlign.center,
-                      'Yêu cầu đi trể về sớm',
-                      style: TextStyle(fontSize: 22),
-                    ),
+                    child: Text(textAlign: TextAlign.center, 'Yêu cầu đi trể về sớm', style: TextStyle(fontSize: 22)),
                   ),
                   SizedBox(height: 20),
                   Expanded(
@@ -187,10 +167,7 @@ class _AddNewMyRequestState extends ConsumerState<AddNewMyRequest> {
                                       value: item['id'],
                                       child: Text(
                                         item['name'].toString(),
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.black87,
-                                        ),
+                                        style: TextStyle(fontSize: 14, color: Colors.black87),
                                       ),
                                     );
                                   }).toList(),
@@ -203,21 +180,15 @@ class _AddNewMyRequestState extends ConsumerState<AddNewMyRequest> {
 
                                   // Tuỳ chỉnh kích thước và style (tuỳ chọn)
                                   buttonStyleData: ButtonStyleData(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 16,
-                                    ),
+                                    padding: EdgeInsets.symmetric(horizontal: 16),
                                     height: 50,
                                     // width: 200,
                                     decoration: BoxDecoration(
                                       color: Colors.grey[200],
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(16.0),
-                                      ),
+                                      borderRadius: BorderRadius.all(Radius.circular(16.0)),
                                     ),
                                   ),
-                                  menuItemStyleData: const MenuItemStyleData(
-                                    height: 40,
-                                  ),
+                                  menuItemStyleData: const MenuItemStyleData(height: 40),
                                 ),
                               ),
                               SizedBox(height: 20),
@@ -232,69 +203,44 @@ class _AddNewMyRequestState extends ConsumerState<AddNewMyRequest> {
                               TextFormField(
                                 controller: _noteController,
                                 maxLines: 5,
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.black87,
-                                ),
+                                style: TextStyle(fontSize: 14, color: Colors.black87),
                                 decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.symmetric(
-                                    vertical: 10,
-                                    horizontal: 16,
-                                  ),
+                                  contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
                                   filled: true,
                                   fillColor: Colors.grey[200],
                                   // Viền khi chưa focus
                                   enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(16.0),
-                                    ),
-                                    borderSide: BorderSide(
-                                      color: Colors.white,
-                                      width: 0,
-                                    ),
+                                    borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                                    borderSide: BorderSide(color: Colors.white, width: 0),
                                   ),
 
                                   // Viền khi focus vào
                                   focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(16.0),
-                                    ),
-                                    borderSide: BorderSide(
-                                      color: Colors.white,
-                                      width: 0,
-                                    ),
+                                    borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                                    borderSide: BorderSide(color: Colors.white, width: 0),
                                   ),
                                 ),
                               ),
                               SizedBox(height: 20),
                               Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   SizedBox(
                                     height: wscreen * 0.12,
                                     width: wscreen * 0.6,
                                     child: OutlinedButton(
-                                      style: OutlinedButton.styleFrom(
-                                        backgroundColor: Colors.grey[200],
-                                      ),
+                                      style: OutlinedButton.styleFrom(backgroundColor: Colors.grey[200]),
                                       onPressed: _selectDate,
-                                      child: Text(
-                                        selectedStringDate ?? "Chọn ngày",
-                                      ),
+                                      child: Text(selectedStringDate ?? "Chọn ngày"),
                                     ),
                                   ),
                                   SizedBox(
                                     height: wscreen * 0.12,
                                     width: wscreen * 0.3,
                                     child: OutlinedButton(
-                                      style: OutlinedButton.styleFrom(
-                                        backgroundColor: Colors.grey[200],
-                                      ),
+                                      style: OutlinedButton.styleFrom(backgroundColor: Colors.grey[200]),
                                       onPressed: _selectTime,
-                                      child: Text(
-                                        selectedStringTime ?? "Chọn giờ",
-                                      ),
+                                      child: Text(selectedStringTime ?? "Chọn giờ"),
                                     ),
                                   ),
                                 ],
@@ -307,14 +253,7 @@ class _AddNewMyRequestState extends ConsumerState<AddNewMyRequest> {
                           width: double.infinity,
                           child: _formKey.currentState?.validate() ?? false
                               ? ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Color.fromRGBO(
-                                      145,
-                                      109,
-                                      209,
-                                      1,
-                                    ),
-                                  ),
+                                  style: ElevatedButton.styleFrom(backgroundColor: Color.fromRGBO(145, 109, 209, 1)),
                                   onPressed: () async {
                                     final res = await submit();
 
@@ -323,28 +262,14 @@ class _AddNewMyRequestState extends ConsumerState<AddNewMyRequest> {
                                       context.pop();
                                     }
                                   },
-                                  child: Text(
-                                    'Thêm mới',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.white,
-                                    ),
-                                  ),
+                                  child: Text('Thêm mới', style: TextStyle(fontSize: 14, color: Colors.white)),
                                 )
                               : ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.grey[600],
-                                  ),
+                                  style: ElevatedButton.styleFrom(backgroundColor: Colors.grey[600]),
                                   onPressed: () {
                                     // final res = submit();
                                   },
-                                  child: Text(
-                                    'Thêm mới',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.white,
-                                    ),
-                                  ),
+                                  child: Text('Thêm mới', style: TextStyle(fontSize: 14, color: Colors.white)),
                                 ),
                         ),
                       ],

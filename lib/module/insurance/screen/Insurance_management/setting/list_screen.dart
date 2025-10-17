@@ -14,12 +14,10 @@ class ListInsuranceSetting extends ConsumerStatefulWidget {
   const ListInsuranceSetting({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _ListInsuranceSettingState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _ListInsuranceSettingState();
 }
 
-class _ListInsuranceSettingState extends ConsumerState<ListInsuranceSetting>
-    with TickerProviderStateMixin {
+class _ListInsuranceSettingState extends ConsumerState<ListInsuranceSetting> with TickerProviderStateMixin {
   final TextEditingController _searchController = TextEditingController();
 
   @override
@@ -32,16 +30,9 @@ class _ListInsuranceSettingState extends ConsumerState<ListInsuranceSetting>
 
     filterList = query.isEmpty
         ? state.data
-        : state.data
-              .where(
-                (item) => item.toSearchString().toLowerCase().contains(query),
-              )
-              .toList();
+        : state.data.where((item) => item.toSearchString().toLowerCase().contains(query)).toList();
 
-    final currencyFormatterVnd = NumberFormat.currency(
-      locale: 'vi_VN',
-      symbol: '\VNĐ',
-    );
+    final currencyFormatterVnd = NumberFormat.currency(locale: 'vi_VN', symbol: '\VNĐ');
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -50,10 +41,7 @@ class _ListInsuranceSettingState extends ConsumerState<ListInsuranceSetting>
           : Column(
               children: [
                 Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 10.0,
-                    vertical: 6.0,
-                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
                   width: MediaQuery.of(context).size.width,
                   height: 50,
                   child: Row(
@@ -66,12 +54,7 @@ class _ListInsuranceSettingState extends ConsumerState<ListInsuranceSetting>
                               filterList = query.isEmpty
                                   ? state.data
                                   : state.data
-                                        .where(
-                                          (item) => item
-                                              .toSearchString()
-                                              .toLowerCase()
-                                              .contains(value),
-                                        )
+                                        .where((item) => item.toSearchString().toLowerCase().contains(value))
                                         .toList();
                             });
                           },
@@ -81,18 +64,12 @@ class _ListInsuranceSettingState extends ConsumerState<ListInsuranceSetting>
                             contentPadding: EdgeInsets.all(10),
                             // Border khi không focus
                             enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: const Color.fromARGB(118, 158, 158, 158),
-                                width: 1,
-                              ),
+                              borderSide: BorderSide(color: const Color.fromARGB(118, 158, 158, 158), width: 1),
                               borderRadius: BorderRadius.circular(16),
                             ),
                             // Border khi focus
                             focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Colors.blue,
-                                width: 2,
-                              ),
+                              borderSide: BorderSide(color: Colors.blue, width: 2),
                               borderRadius: BorderRadius.circular(8),
                             ),
                           ),
@@ -103,41 +80,20 @@ class _ListInsuranceSettingState extends ConsumerState<ListInsuranceSetting>
                       Expanded(
                         flex: 3,
                         child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color.fromRGBO(
-                              2,
-                              117,
-                              216,
-                              1,
-                            ),
-                          ),
+                          style: ElevatedButton.styleFrom(backgroundColor: const Color.fromRGBO(2, 117, 216, 1)),
                           onPressed: () {
                             showGeneralDialog(
                               context: context,
                               barrierDismissible: true,
                               barrierLabel: "Modal",
-                              transitionDuration: const Duration(
-                                milliseconds: 300,
-                              ),
-                              pageBuilder: (_, __, ___) =>
-                                  const SizedBox.shrink(),
-                              transitionBuilder:
-                                  (
-                                    context,
-                                    animation,
-                                    secondaryAnimation,
-                                    child,
-                                  ) {
-                                    return AddNewInsuranceCategory(
-                                      animation: animation,
-                                    );
-                                  },
+                              transitionDuration: const Duration(milliseconds: 300),
+                              pageBuilder: (_, __, ___) => const SizedBox.shrink(),
+                              transitionBuilder: (context, animation, secondaryAnimation, child) {
+                                return AddNewInsuranceCategory(animation: animation);
+                              },
                             );
                           },
-                          child: Text(
-                            'Thêm mới',
-                            style: TextStyle(color: Colors.white),
-                          ),
+                          child: Text('Thêm mới', style: TextStyle(color: Colors.white)),
                         ),
                       ),
                     ],
@@ -151,12 +107,7 @@ class _ListInsuranceSettingState extends ConsumerState<ListInsuranceSetting>
                       return Column(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(
-                              8.0,
-                              6.0,
-                              8.0,
-                              6.0,
-                            ),
+                            padding: const EdgeInsets.fromLTRB(8.0, 6.0, 8.0, 6.0),
                             child: Slidable(
                               endActionPane: ActionPane(
                                 motion: ScrollMotion(),
@@ -164,21 +115,14 @@ class _ListInsuranceSettingState extends ConsumerState<ListInsuranceSetting>
                                   SlidableAction(
                                     onPressed: (_) {
                                       final confirmData = data[index].name;
-                                      final deleteData = jsonEncode({
-                                        "id": data[index].id,
-                                        "reason": "Uesless",
-                                      });
+                                      final deleteData = jsonEncode({"id": data[index].id, "reason": "Uesless"});
                                       // print(deleteData);
                                       showDialog(
                                         context: context,
                                         builder: (ctx) => AlertDialog(
                                           title: const Text("Xóa?"),
                                           content: SizedBox(
-                                            width:
-                                                MediaQuery.of(
-                                                  context,
-                                                ).size.width *
-                                                0.7, // hoặc số cố định ví dụ 300
+                                            width: MediaQuery.of(context).size.width * 0.7, // hoặc số cố định ví dụ 300
                                             child: Text(
                                               "Bạn có chắc muốn xóa '$confirmData' không?",
                                               softWrap: true,
@@ -188,10 +132,7 @@ class _ListInsuranceSettingState extends ConsumerState<ListInsuranceSetting>
                                           ),
                                           actions: <Widget>[
                                             TextButton(
-                                              style: TextButton.styleFrom(
-                                                backgroundColor:
-                                                    Colors.red[100],
-                                              ),
+                                              style: TextButton.styleFrom(backgroundColor: Colors.red[100]),
                                               onPressed: () async {
                                                 // if (await ref
                                                 //     .read(
@@ -206,9 +147,7 @@ class _ListInsuranceSettingState extends ConsumerState<ListInsuranceSetting>
                                             ),
                                             TextButton(
                                               onPressed: () {
-                                                context.go(
-                                                  '/insurance-setting',
-                                                );
+                                                context.go('/insurance-setting');
                                               },
                                               child: const Text("Hủy"),
                                             ),
@@ -216,12 +155,7 @@ class _ListInsuranceSettingState extends ConsumerState<ListInsuranceSetting>
                                         ),
                                       );
                                     },
-                                    backgroundColor: Color.fromRGBO(
-                                      254,
-                                      73,
-                                      73,
-                                      0.8,
-                                    ),
+                                    backgroundColor: Color.fromRGBO(254, 73, 73, 0.8),
                                     foregroundColor: Colors.white,
                                     icon: Icons.delete,
 
@@ -277,99 +211,52 @@ class _ListInsuranceSettingState extends ConsumerState<ListInsuranceSetting>
                                       offset: Offset(2, 6),
                                     ),
                                   ],
-                                  border: Border.all(
-                                    color: const Color.fromARGB(
-                                      143,
-                                      158,
-                                      158,
-                                      158,
-                                    ),
-                                  ),
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(8.0),
-                                  ),
+                                  border: Border.all(color: const Color.fromARGB(143, 158, 158, 158)),
+                                  borderRadius: BorderRadius.all(Radius.circular(8.0)),
                                 ),
                                 child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                            16,
-                                            10,
-                                            16,
-                                            3,
-                                          ),
-                                          child: Text(
-                                            data[index].name,
-                                            style: TextStyle(fontSize: 20),
-                                          ),
+                                          padding: const EdgeInsets.fromLTRB(16, 10, 16, 3),
+                                          child: Text(data[index].name, style: TextStyle(fontSize: 20)),
                                         ),
                                         Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                            16.0,
-                                            0.0,
-                                            8.0,
-                                            0.0,
-                                          ),
+                                          padding: const EdgeInsets.fromLTRB(16.0, 0.0, 8.0, 0.0),
                                           child: Container(
                                             // color: Colors.redAccent[100],
                                             child: Row(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                              mainAxisAlignment: MainAxisAlignment.center,
                                               children: [
                                                 Text(
-                                                  currencyFormatterVnd.format(
-                                                    (data[index].minimumSalary)
-                                                        .toDouble(),
-                                                  ),
-                                                  style: TextStyle(
-                                                    fontSize: 15,
-                                                  ),
+                                                  currencyFormatterVnd.format((data[index].minimumSalary).toDouble()),
+                                                  style: TextStyle(fontSize: 15),
                                                   textAlign: TextAlign.center,
-                                                  textHeightBehavior:
-                                                      TextHeightBehavior(
-                                                        applyHeightToFirstAscent:
-                                                            false,
-                                                        applyHeightToLastDescent:
-                                                            false,
-                                                      ),
+                                                  textHeightBehavior: TextHeightBehavior(
+                                                    applyHeightToFirstAscent: false,
+                                                    applyHeightToLastDescent: false,
+                                                  ),
                                                 ),
                                                 Text("  -  "),
                                                 Text(
-                                                  currencyFormatterVnd.format(
-                                                    (data[index].maximumSalary)
-                                                        .toDouble(),
-                                                  ),
-                                                  style: TextStyle(
-                                                    fontSize: 15,
-                                                  ),
+                                                  currencyFormatterVnd.format((data[index].maximumSalary).toDouble()),
+                                                  style: TextStyle(fontSize: 15),
                                                 ),
                                               ],
                                             ),
                                           ),
                                         ),
                                         Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                            16.0,
-                                            2.0,
-                                            8.0,
-                                            0.0,
-                                          ),
+                                          padding: const EdgeInsets.fromLTRB(16.0, 2.0, 8.0, 0.0),
                                           child: Row(
                                             children: [
                                               Text(
                                                 data[index].notes ?? '',
-                                                style: TextStyle(
-                                                  color: Colors.grey[600],
-                                                  fontStyle: FontStyle.italic,
-                                                ),
+                                                style: TextStyle(color: Colors.grey[600], fontStyle: FontStyle.italic),
                                               ),
                                             ],
                                           ),
@@ -377,42 +264,21 @@ class _ListInsuranceSettingState extends ConsumerState<ListInsuranceSetting>
                                       ],
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                        8.0,
-                                        10.0,
-                                        8.0,
-                                        8.0,
-                                      ),
+                                      padding: const EdgeInsets.fromLTRB(8.0, 10.0, 8.0, 8.0),
                                       child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment: CrossAxisAlignment.end,
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: <Widget>[
                                           Container(
                                             decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(8.0),
-                                              ),
+                                              borderRadius: BorderRadius.all(Radius.circular(8.0)),
                                               color: Colors.grey[100],
-                                              border: Border.all(
-                                                color: const Color.fromARGB(
-                                                  124,
-                                                  158,
-                                                  158,
-                                                  158,
-                                                ),
-                                              ),
+                                              border: Border.all(color: const Color.fromARGB(124, 158, 158, 158)),
                                             ),
 
                                             child: Padding(
-                                              padding: const EdgeInsets.all(
-                                                6.0,
-                                              ),
-                                              child: Text(
-                                                data[index].code,
-                                                style: TextStyle(fontSize: 14),
-                                              ),
+                                              padding: const EdgeInsets.all(6.0),
+                                              child: Text(data[index].code, style: TextStyle(fontSize: 14)),
                                             ),
                                           ),
                                           // Text(

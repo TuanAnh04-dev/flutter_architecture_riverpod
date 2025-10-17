@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
-import 'package:px1_mobile/core/language/language_logic.dart';
 import 'package:px1_mobile/module/base/logic/my_profile.dart';
 import 'package:px1_mobile/module/user/screen/list_user.dart';
 import 'package:px1_mobile/screen/Dashboard.dart';
@@ -10,9 +9,7 @@ import 'package:px1_mobile/screen/Setting.dart';
 
 class Homepage extends ConsumerWidget {
   Homepage({super.key});
-  final PersistentTabController _controller = PersistentTabController(
-    initialIndex: 0,
-  );
+  final PersistentTabController _controller = PersistentTabController(initialIndex: 0);
   List<Widget> _buildScreens() {
     return [Dashboard(), ListUser(), FunctionPage(), Setting()];
   }
@@ -51,7 +48,6 @@ class Homepage extends ConsumerWidget {
     // final locale = ref.watch(localeProvider);
     final profile = ref.read(myProfileProvider.notifier).getMyProfile();
     return PersistentTabView(
-      // key: ValueKey(locale.languageCode),
       context,
       screens: _buildScreens(),
       items: _navBarsItems(),

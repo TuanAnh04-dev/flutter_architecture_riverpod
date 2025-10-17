@@ -39,13 +39,7 @@ class LeaveCompassionState {
 class LeaveCompassionNotifier extends Notifier<LeaveCompassionState> {
   @override
   LeaveCompassionState build() {
-    return LeaveCompassionState(
-      isLoading: false,
-      data: [],
-      myData: [],
-      ortherData: [],
-      error: null,
-    );
+    return LeaveCompassionState(isLoading: false, data: [], myData: [], ortherData: [], error: null);
   }
 
   Future<bool> getLists() async {
@@ -74,19 +68,10 @@ class LeaveCompassionNotifier extends Notifier<LeaveCompassionState> {
             ortherReq.add(e);
           }
         }
-        state = state.copyWith(
-          data: listData,
-          myData: myReq,
-          ortherData: ortherReq,
-          isLoading: false,
-        );
+        state = state.copyWith(data: listData, myData: myReq, ortherData: ortherReq, isLoading: false);
         return true;
       } else {
-        state = state.copyWith(
-          data: null,
-          isLoading: false,
-          error: response.data['message'],
-        );
+        state = state.copyWith(data: null, isLoading: false, error: response.data['message']);
         return false;
       }
     } catch (e) {
@@ -97,7 +82,6 @@ class LeaveCompassionNotifier extends Notifier<LeaveCompassionState> {
   }
 }
 
-final leaveCompassionProvider =
-    NotifierProvider<LeaveCompassionNotifier, LeaveCompassionState>(
-      LeaveCompassionNotifier.new,
-    );
+final leaveCompassionProvider = NotifierProvider<LeaveCompassionNotifier, LeaveCompassionState>(
+  LeaveCompassionNotifier.new,
+);

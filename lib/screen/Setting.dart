@@ -42,10 +42,7 @@ class _SettingState extends ConsumerState<Setting> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Center(
-            child: Text(
-              'Settings Page',
-              style: TextStyle(fontSize: 24, color: Colors.deepPurple),
-            ),
+            child: Text('Settings Page', style: TextStyle(fontSize: 24, color: Colors.deepPurple)),
           ),
           SizedBox(height: 20),
           ElevatedButton(
@@ -74,6 +71,19 @@ class _SettingState extends ConsumerState<Setting> {
               print(">>>>>>>>Check listen: " + listen.data.toString());
             },
             child: Text('listen'),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              context.go('/on-boarding');
+            },
+            child: Text('On boarding page'),
+          ),
+
+          ElevatedButton(
+            onPressed: () async {
+              context.go('/trolle');
+            },
+            child: Text('Trolle world'),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,

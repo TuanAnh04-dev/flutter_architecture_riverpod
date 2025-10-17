@@ -4,24 +4,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:px1_mobile/auth/auth_provider.dart';
 import 'package:px1_mobile/core/contants/api.dart';
-import 'package:px1_mobile/module/requirement/model/late_and_early.dart';
 
-class LateAndEarlyState {
+import 'package:px1_mobile/module/trolle/model/Lable.dart';
+
+class LableState {
   final bool isLoading;
-  final List<LateAndEarly> data;
-  final List<LateAndEarly> myData;
-  final List<LateAndEarly> ortherData;
+  final List<Lable> data;
+  final List<Lable> myData;
+  final List<Lable> ortherData;
   final String? error = null;
 
-  LateAndEarlyState({
-    required this.isLoading,
-    required this.data,
-    required this.myData,
-    required this.ortherData,
-    error,
-  });
+  LableState({required this.isLoading, required this.data, required this.myData, required this.ortherData, error});
 
-  LateAndEarlyState copyWith({
+  LableState copyWith({
     dynamic data,
     dynamic myData,
     dynamic ortherData,
@@ -29,7 +24,7 @@ class LateAndEarlyState {
     bool? isReset,
     String? error,
   }) {
-    return LateAndEarlyState(
+    return LableState(
       data: data ?? this.data,
       isLoading: isLoading ?? this.isLoading,
       myData: myData ?? this.myData,
@@ -38,42 +33,36 @@ class LateAndEarlyState {
   }
 }
 
-class LateAndEarlyNotifier extends Notifier<LateAndEarlyState> {
+class LableNotifier extends Notifier<LableState> {
   @override
-  LateAndEarlyState build() {
+  LableState build() {
     Future.microtask(() => getList());
-    return LateAndEarlyState(isLoading: false, data: [], error: null, myData: [], ortherData: []);
+    return LableState(isLoading: false, data: [], error: null, myData: [], ortherData: []);
   }
 
   Future<bool> getList() async {
     state = state.copyWith(isLoading: true, error: null);
     try {
       // Lấy token nếu cần
-      final listen = ref.watch(authProvider);
+      final listen = ref.read(authProvider);
       final token = listen.userAuth!.accesstoken;
       var workMail = listen.userAuth!.email;
 
-      List<LateAndEarly> myReq = [];
-      List<LateAndEarly> ortherReq = [];
+      List<Lable> myReq = [];
+      List<Lable> ortherReq = [];
       workMail = workMail!.split('.')[0];
       workMail = workMail.replaceAll('"', '');
 
       // Gọi API
       final dio = Dio();
       dio.options.headers['Authorization'] = 'Bearer $token';
-      String url = '$baseUrl/late-and-early';
+      String url = '$baseUrl/lable';
       final response = await dio.get(url);
       if (response.statusCode == 200 && response.data['code'] == 200) {
         List<dynamic> data = response.data['data']; // Tùy theo cấu trúc
         // print(data);
-        final listData = data.map((i) => LateAndEarly.fromJson(i)).toList();
-        for (var e in listData) {
-          if (e.employee[0].workEmail == workMail) {
-            myReq.add(e);
-          } else {
-            ortherReq.add(e);
-          }
-        }
+        final listData = data.map((i) => Lable.fromJson(i)).toList();
+
         state = state.copyWith(data: listData, myData: myReq, ortherData: ortherReq, isLoading: false);
         return true;
       } else {
@@ -82,19 +71,18 @@ class LateAndEarlyNotifier extends Notifier<LateAndEarlyState> {
       }
     } catch (e) {
       state = state.copyWith(isLoading: false, error: 'Lỗi hệ thống');
-      print('Call api has error: ' + e.toString());
       return false;
     }
   }
 
   Future<bool> addRequest(dynamic data) async {
     try {
-      final listen = ref.watch(authProvider);
+      final listen = ref.read(authProvider);
       final token = listen.userAuth!.accesstoken;
       // Gọi API
       final dio = Dio();
       dio.options.headers['Authorization'] = 'Bearer $token';
-      String url = '$baseUrl/late-and-early';
+      String url = '$baseUrl/board';
 
       final res = await dio.post(url, data: data);
       if (res.statusCode == 201 && res.data["code"] == 201) {
@@ -137,12 +125,12 @@ class LateAndEarlyNotifier extends Notifier<LateAndEarlyState> {
 
   Future<bool> deleteRequest(dynamic data) async {
     try {
-      final listen = ref.watch(authProvider);
+      final listen = ref.read(authProvider);
       final token = listen.userAuth!.accesstoken;
       // Gọi API
       final dio = Dio();
       dio.options.headers['Authorization'] = 'Bearer $token';
-      String url = '$baseUrl/late-and-early/delete';
+      String url = '$baseUrl/lable/delete';
 
       final res = await dio.post(url, data: data);
       if (res.statusCode == 200 && res.data["code"] == 200) {
@@ -184,4 +172,4 @@ class LateAndEarlyNotifier extends Notifier<LateAndEarlyState> {
   }
 }
 
-final lateAndEarlyProvider = NotifierProvider<LateAndEarlyNotifier, LateAndEarlyState>(LateAndEarlyNotifier.new);
+final LableProvider = NotifierProvider<LableNotifier, LableState>(LableNotifier.new);
