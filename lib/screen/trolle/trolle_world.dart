@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
-import 'package:px1_mobile/screen/trolle/Board.dart';
-import 'package:px1_mobile/screen/trolle/MyCard.dart';
-import 'package:px1_mobile/screen/trolle/Notification%20copy.dart';
-import 'package:px1_mobile/screen/trolle/Notification.dart';
-import 'package:px1_mobile/screen/trolle/SearchPage.dart';
+import 'package:px1_mobile/screen/trolle/board.dart';
+import 'package:px1_mobile/screen/trolle/myCard.dart';
+import 'package:px1_mobile/screen/trolle/account.dart';
+import 'package:px1_mobile/screen/trolle/notification.dart';
+import 'package:px1_mobile/screen/trolle/searchPage.dart';
 
 class TrolleWorld extends ConsumerWidget {
   const TrolleWorld({super.key});
