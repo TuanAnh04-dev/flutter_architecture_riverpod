@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:px1_mobile/auth/auth_provider.dart';
-import 'package:px1_mobile/core/language/language_logic.dart';
 import 'package:px1_mobile/module/insurance/logic/insurance_category.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -42,7 +41,10 @@ class _SettingState extends ConsumerState<Setting> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Center(
-            child: Text('Settings Page', style: TextStyle(fontSize: 24, color: Colors.deepPurple)),
+            child: Text(
+              'Settings Page',
+              style: TextStyle(fontSize: 24, color: Colors.deepPurple),
+            ),
           ),
           SizedBox(height: 20),
           ElevatedButton(

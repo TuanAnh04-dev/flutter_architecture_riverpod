@@ -19,7 +19,10 @@ class AuthState {
 }
 
 class AuthNotifier extends StateNotifier<AuthState> {
-  AuthNotifier() : super(const AuthState(isLoading: false, userAuth: null, errorAuth: null)) {
+  AuthNotifier()
+    : super(
+        const AuthState(isLoading: false, userAuth: null, errorAuth: null),
+      ) {
     _loadFormLocal();
   }
 
@@ -31,17 +34,23 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
       // int ttl = int.parse(user['ttl']);
       if (!isTokenExpired(user['ttl'].toString())) {
-        state = AuthState(isLoading: false, userAuth: UserAuth.fromJson(user), errorAuth: null);
+        state = AuthState(
+          isLoading: false,
+          userAuth: UserAuth.fromJson(user),
+          errorAuth: null,
+        );
       }
     } else {
       logout(); // Hết hạn thì xoá luôn
     }
-    print('>>>>>>>>>>>>>>> Đã gọi vào load from local trong authProvider');
+    // print('>>>>>>>>>>>>>>> Đã gọi vào load from local trong authProvider');
   }
 
   bool isTokenExpired(String ttl) {
     int time = int.parse(ttl);
-    final now = DateTime.now().millisecondsSinceEpoch ~/ 1000; // thời gian hiện tại (giây)
+    final now =
+        DateTime.now().millisecondsSinceEpoch ~/
+        1000; // thời gian hiện tại (giây)
     return now > time;
   }
 
@@ -53,7 +62,10 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
     try {
       final dio = Dio();
-      final response = await dio.post('$baseUrl/login', data: {"user_name": email, "password": password});
+      final response = await dio.post(
+        '$baseUrl/login',
+        data: {"user_name": email, "password": password},
+      );
 
       if (response.statusCode == 200 && response.statusMessage == "OK") {
         final userAuth = UserAuth.fromJson(response.data['message']);
@@ -88,7 +100,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
         );
       } else {
         final resApi = ResponseApi.fromJson(response.data);
-        print(">>>>Login: " + resApi.message + ", " + resApi.code.toString());
+        // print(">>>>Login: " + resApi.message + ", " + resApi.code.toString());
         Fluttertoast.showToast(
           msg: "Đăng nhập không thành công",
           toastLength: Toast.LENGTH_LONG, // hoặc Toast.LENGTH_LONG
@@ -99,7 +111,11 @@ class AuthNotifier extends StateNotifier<AuthState> {
           fontSize: 16.0,
           webShowClose: true,
         );
-        state = AuthState(userAuth: null, isLoading: false, errorAuth: resApi.message);
+        state = AuthState(
+          userAuth: null,
+          isLoading: false,
+          errorAuth: resApi.message,
+        );
       }
     } catch (e) {
       Fluttertoast.showToast(
@@ -112,7 +128,11 @@ class AuthNotifier extends StateNotifier<AuthState> {
         fontSize: 16.0,
         webShowClose: true,
       );
-      state = AuthState(userAuth: null, isLoading: false, errorAuth: "Tên đăng nhập hoặc mật khẩu không chính xác");
+      state = AuthState(
+        userAuth: null,
+        isLoading: false,
+        errorAuth: "Tên đăng nhập hoặc mật khẩu không chính xác",
+      );
     }
   }
 

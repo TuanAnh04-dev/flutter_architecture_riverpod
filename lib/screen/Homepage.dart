@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
+import 'package:px1_mobile/feature/product/presentation/pages/product_list_page.dart';
 import 'package:px1_mobile/module/base/logic/my_profile.dart';
 import 'package:px1_mobile/module/user/screen/list_user.dart';
 import 'package:px1_mobile/screen/Dashboard.dart';
@@ -9,9 +10,11 @@ import 'package:px1_mobile/screen/Setting.dart';
 
 class Homepage extends ConsumerWidget {
   Homepage({super.key});
-  final PersistentTabController _controller = PersistentTabController(initialIndex: 0);
+  final PersistentTabController _controller = PersistentTabController(
+    initialIndex: 0,
+  );
   List<Widget> _buildScreens() {
-    return [Dashboard(), ListUser(), FunctionPage(), Setting()];
+    return [Dashboard(), ListUser(), ProductListPage(), Setting()];
   }
 
   List<PersistentBottomNavBarItem> _navBarsItems() {
