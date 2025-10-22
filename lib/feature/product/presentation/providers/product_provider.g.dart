@@ -6,7 +6,7 @@ part of 'product_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$apiClinetHash() => r'9af52d5633a23945dbaa940a83c994adf55bbfe3';
+String _$apiClinetHash() => r'414fe8b6dc5fcea3e767973d558a6ed196928f3a';
 
 /// See also [apiClinet].
 @ProviderFor(apiClinet)
@@ -24,7 +24,7 @@ final apiClinetProvider = AutoDisposeProvider<ApiClient>.internal(
 // ignore: unused_element
 typedef ApiClinetRef = AutoDisposeProviderRef<ApiClient>;
 String _$productRemoteDataSourceHash() =>
-    r'b26178de8b94d828af6caadb0d56630273a03513';
+    r'510b0e5755d3791ccc49537f93453b11b9714b81';
 
 /// See also [productRemoteDataSource].
 @ProviderFor(productRemoteDataSource)

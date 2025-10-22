@@ -43,7 +43,6 @@ class AuthNotifier extends StateNotifier<AuthState> {
     } else {
       logout(); // Hết hạn thì xoá luôn
     }
-    // print('>>>>>>>>>>>>>>> Đã gọi vào load from local trong authProvider');
   }
 
   bool isTokenExpired(String ttl) {
@@ -66,8 +65,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
         '$baseUrl/login',
         data: {"user_name": email, "password": password},
       );
-
-      if (response.statusCode == 200 && response.statusMessage == "OK") {
+      if (response.statusCode == 200) {
         final userAuth = UserAuth.fromJson(response.data['message']);
         Map<String, dynamic> fakeUser = UserAuth(
           email: email,
@@ -88,6 +86,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
           textColor: Colors.green,
           fontSize: 16.0,
         );
+
         state = AuthState(
           userAuth: UserAuth(
             email: workMail,
@@ -100,7 +99,6 @@ class AuthNotifier extends StateNotifier<AuthState> {
         );
       } else {
         final resApi = ResponseApi.fromJson(response.data);
-        // print(">>>>Login: " + resApi.message + ", " + resApi.code.toString());
         Fluttertoast.showToast(
           msg: "Đăng nhập không thành công",
           toastLength: Toast.LENGTH_LONG, // hoặc Toast.LENGTH_LONG
@@ -118,6 +116,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
         );
       }
     } catch (e) {
+      print(">>>>>>>>>>>>>>>> Check error: $e");
       Fluttertoast.showToast(
         msg: "Đăng nhập không thành công",
         toastLength: Toast.LENGTH_LONG, // hoặc Toast.LENGTH_LONG

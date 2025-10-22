@@ -40,4 +40,24 @@ class EmployeeModel extends Employee {
       updatedAt: DateTime.parse(json['updated_at'] ?? ''),
     );
   }
+
+  Employee toEntity() {
+    return Employee(
+      id: id,
+      employeeId: employeeId,
+      firstName: firstName,
+      lastName: lastName,
+      middleName: middleName,
+      workEmail: workEmail,
+      joinedDate: joinedDate,
+      termindatedDate: termindatedDate,
+      isDefault: isDefault,
+      user: user,
+      tenant: tenant,
+      avatar: avatar,
+      attendanceId: attendanceId,
+      createdAt: createdAt,
+      updatedAt: updatedAt,
+    );
+  }
 }

@@ -42,7 +42,13 @@ class LateAndEarlyNotifier extends Notifier<LateAndEarlyState> {
   @override
   LateAndEarlyState build() {
     Future.microtask(() => getList());
-    return LateAndEarlyState(isLoading: false, data: [], error: null, myData: [], ortherData: []);
+    return LateAndEarlyState(
+      isLoading: false,
+      data: [],
+      error: null,
+      myData: [],
+      ortherData: [],
+    );
   }
 
   Future<bool> getList() async {
@@ -74,10 +80,19 @@ class LateAndEarlyNotifier extends Notifier<LateAndEarlyState> {
             ortherReq.add(e);
           }
         }
-        state = state.copyWith(data: listData, myData: myReq, ortherData: ortherReq, isLoading: false);
+        state = state.copyWith(
+          data: listData,
+          myData: myReq,
+          ortherData: ortherReq,
+          isLoading: false,
+        );
         return true;
       } else {
-        state = state.copyWith(data: null, isLoading: false, error: response.data['message']);
+        state = state.copyWith(
+          data: null,
+          isLoading: false,
+          error: response.data['message'],
+        );
         return false;
       }
     } catch (e) {
@@ -107,7 +122,11 @@ class LateAndEarlyNotifier extends Notifier<LateAndEarlyState> {
           fontSize: 16.0,
         );
         await getList();
-        state = state.copyWith(data: null, isLoading: false, error: res.data['message']);
+        state = state.copyWith(
+          data: null,
+          isLoading: false,
+          error: res.data['message'],
+        );
         return true;
       } else {
         Fluttertoast.showToast(
@@ -155,7 +174,11 @@ class LateAndEarlyNotifier extends Notifier<LateAndEarlyState> {
           fontSize: 16.0,
         );
         await getList();
-        state = state.copyWith(data: null, isLoading: false, error: res.data['message']);
+        state = state.copyWith(
+          data: null,
+          isLoading: false,
+          error: res.data['message'],
+        );
         return true;
       } else {
         Fluttertoast.showToast(
@@ -184,4 +207,7 @@ class LateAndEarlyNotifier extends Notifier<LateAndEarlyState> {
   }
 }
 
-final lateAndEarlyProvider = NotifierProvider<LateAndEarlyNotifier, LateAndEarlyState>(LateAndEarlyNotifier.new);
+final lateAndEarlyProvider =
+    NotifierProvider<LateAndEarlyNotifier, LateAndEarlyState>(
+      LateAndEarlyNotifier.new,
+    );

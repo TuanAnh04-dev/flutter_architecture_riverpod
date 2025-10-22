@@ -18,7 +18,10 @@ void main() async {
       supportedLocales: const [Locale('en'), Locale('vi')],
       fallbackLocale: const Locale('vi'),
       path: 'assets/lang',
-      child: ProviderScope(overrides: [sharedPreferencesProvider.overrideWithValue(prefs)], child: MyApp()),
+      child: ProviderScope(
+        overrides: [sharedPreferencesProvider.overrideWithValue(prefs)],
+        child: MyApp(),
+      ),
     ),
   );
 }
@@ -30,8 +33,8 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-
     final route = ref.watch(routeProvider);
+
     return ToastificationWrapper(
       child: MaterialApp.router(
         title: 'Px1',

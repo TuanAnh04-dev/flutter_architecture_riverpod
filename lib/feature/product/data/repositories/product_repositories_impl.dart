@@ -13,8 +13,7 @@ class ProductRepositoryImpl implements ProductRepo {
   Future<Either<Failure, List<Product>>> getProducts() async {
     try {
       final result = await remoteDataSource.getProducts();
-      Println("Call Product Repo ipml");
-      print(">>>>:  $result");
+
       return Right(result.map((model) => model.toEntity()).toList());
     } on ServerException catch (e) {
       return Left(

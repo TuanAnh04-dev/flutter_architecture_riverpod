@@ -11,7 +11,7 @@ part 'product_provider.g.dart';
 
 @riverpod
 ApiClient apiClinet(Ref ref) {
-  return ApiClient(Dio());
+  return ApiClient(Dio(), ref);
 }
 
 // Provider cho DataSource
