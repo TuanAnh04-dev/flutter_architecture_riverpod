@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:px1_mobile/auth/UserAuth.dart';
 import 'package:px1_mobile/core/contants/responseModel.dart';
+import 'package:px1_mobile/core/service/secure_storage_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:px1_mobile/core/contants/api.dart';
@@ -19,30 +20,51 @@ class AuthState {
 }
 
 class AuthNotifier extends StateNotifier<AuthState> {
+  final SecureStorageService _secureStorage = SecureStorageService();
+
   AuthNotifier()
     : super(
         const AuthState(isLoading: false, userAuth: null, errorAuth: null),
       ) {
-    _loadFormLocal();
+    _loadFormSecureStorage();
   }
 
-  Future<void> _loadFormLocal() async {
-    final prefs = await SharedPreferences.getInstance();
-    final userAuth = prefs.getString('userAuth');
-    if (userAuth != null) {
-      dynamic user = jsonDecode(userAuth) as Map<String, dynamic>;
-
-      // int ttl = int.parse(user['ttl']);
-      if (!isTokenExpired(user['ttl'].toString())) {
-        state = AuthState(
-          isLoading: false,
-          userAuth: UserAuth.fromJson(user),
-          errorAuth: null,
-        );
+  Future<void> _loadFormSecureStorage() async {
+    try {
+      final userAuthJson = await _secureStorage.getUserAuth();
+      if (userAuthJson != null && userAuthJson.isNotEmpty) {
+        final userMap = jsonDecode(userAuthJson) as Map<String, dynamic>;
+        final userAuth = UserAuth.fromJson(userMap);
+        if (!isTokenExpired(userAuth.ttl.toString())) {
+          state = AuthState(
+            isLoading: false,
+            userAuth: userAuth,
+            errorAuth: null,
+          );
+        } else {
+          logout();
+        }
       }
-    } else {
-      logout(); // Hết hạn thì xoá luôn
+    } catch (e) {
+      debugPrint('Lỗi khi load từ secure storage: $e');
+      logout();
     }
+
+    // final prefs = await SharedPreferences.getInstance();
+    // final userAuth = prefs.getString('userAuth');
+    // if (userAuth != null) {
+    //   dynamic user = jsonDecode(userAuth) as Map<String, dynamic>;
+
+    //   if (!isTokenExpired(user['ttl'].toString())) {
+    //     state = AuthState(
+    //       isLoading: false,
+    //       userAuth: UserAuth.fromJson(user),
+    //       errorAuth: null,
+    //     );
+    //   }
+    // } else {
+    //   logout(); // Hết hạn thì xoá luôn
+    // }
   }
 
   bool isTokenExpired(String ttl) {
@@ -99,47 +121,42 @@ class AuthNotifier extends StateNotifier<AuthState> {
         );
       } else {
         final resApi = ResponseApi.fromJson(response.data);
-        Fluttertoast.showToast(
-          msg: "Đăng nhập không thành công",
-          toastLength: Toast.LENGTH_LONG, // hoặc Toast.LENGTH_LONG
-          gravity: ToastGravity.BOTTOM, // vị trí: TOP, CENTER, BOTTOM
-          timeInSecForIosWeb: 10,
-          backgroundColor: Colors.red[100],
-          textColor: Colors.red,
-          fontSize: 16.0,
-          webShowClose: true,
-        );
-        state = AuthState(
-          userAuth: null,
-          isLoading: false,
-          errorAuth: resApi.message,
-        );
+        handleLoginError(resApi.toJson());
       }
     } catch (e) {
-      print(">>>>>>>>>>>>>>>> Check error: $e");
-      Fluttertoast.showToast(
-        msg: "Đăng nhập không thành công",
-        toastLength: Toast.LENGTH_LONG, // hoặc Toast.LENGTH_LONG
-        gravity: ToastGravity.BOTTOM, // vị trí: TOP, CENTER, BOTTOM
-        timeInSecForIosWeb: 10,
-        backgroundColor: Colors.red[100],
-        textColor: Colors.red,
-        fontSize: 16.0,
-        webShowClose: true,
-      );
-      state = AuthState(
-        userAuth: null,
-        isLoading: false,
-        errorAuth: "Tên đăng nhập hoặc mật khẩu không chính xác",
-      );
+      handleLoginError(e);
     }
   }
 
   void logout() async {
-    final prefs = await SharedPreferences.getInstance();
-    await Future.delayed(Duration(seconds: 2));
-    await prefs.remove('userAuth');
+    await _secureStorage.clearAll();
     state = const AuthState(isLoading: false, userAuth: null);
+  }
+
+  void handleLoginError(dynamic data) {
+    String errorMessage = "Tên đăng nhập hoặc mật khẩu không chính xác";
+    if (data != null) {
+      try {
+        final resApi = ResponseApi.fromJson(data);
+        errorMessage = resApi.message ?? errorMessage;
+      } catch (e) {
+        errorMessage = "System error: $e";
+      }
+    }
+    Fluttertoast.showToast(
+      msg: "Đăng nhập không thành công",
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: Colors.red[100],
+      textColor: Colors.red,
+      fontSize: 16.0,
+    );
+
+    state = AuthState(
+      userAuth: null,
+      isLoading: false,
+      errorAuth: errorMessage,
+    );
   }
 }
 
