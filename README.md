@@ -1,16 +1,36 @@
-# px1_mobile
+# Flutter Riverpod Clean Architecture
 
-A new Flutter project.
+This project demonstrates a Flutter application using clean architecture pattern with Riverpod for state management.
+
+## Documentation
+
+Comprehensive documentation is available in the [docs](docs/README.md) directory:
+
+- [Product Requirements Document](prd.md)
+- [Architecture Diagrams](docs/architecture-diagram.md)
+- [Feature Implementation Guide](docs/feature-guide.md)
+- [API Integration Guide](docs/api-integration.md)
+- [State Management Guide](docs/state-management.md)
+
+## Project Structure
+
+The project follows a feature-first organization with clean architecture:
+
+```
+lib/
+├── feature/             # Features using clean architecture
+│   ├── product/         # Example feature
+│   │   ├── data/        # Data layer
+│   │   ├── domain/      # Domain layer
+│   │   └── presentation/# Presentation layer
+├── core/                # Core functionality
+├── auth/                # Authentication
+└── route/               # Navigation
+```
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. Clone the repository
+2. Run `flutter pub get` to install dependencies
+3. Run `flutter pub run build_runner build --delete-conflicting-outputs` to generate code
+4. Run the application with `flutter run`

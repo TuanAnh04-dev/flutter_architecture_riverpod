@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:px1_mobile/auth/auth_provider.dart';
 import 'package:px1_mobile/auth/login_screen.dart';
@@ -20,14 +21,35 @@ final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
 final routeProvider = Provider<GoRouter>((ref) {
   // final locale = ref.watch(localeProvider);
   final auth = ref.watch(authProvider);
+
+  if (auth.isLoggedIn) {
+    Fluttertoast.showToast(
+      msg: "Đăng nhập thành công",
+      toastLength: Toast.LENGTH_LONG, // hoặc Toast.LENGTH_LONG
+      gravity: ToastGravity.BOTTOM, // vị trí: TOP, CENTER, BOTTOM
+      backgroundColor: Colors.green[100],
+      textColor: Colors.green,
+      fontSize: 16.0,
+    );
+  }
   return GoRouter(
     navigatorKey: rootNavigatorKey,
     initialLocation: '/home',
     redirect: (context, state) {
+      final isLoading = auth.isLoading;
+      if (isLoading) return null;
+      final currentPath = state.matchedLocation;
+
       final loggedIn = (auth.userAuth != null);
       final loggingIn = state.matchedLocation == '/login';
-      if (!loggedIn && !loggingIn) return '/on-boarding';
-      if (loggedIn && loggingIn) return '/Homepage';
+      // Danh sách route công khai (không cần login)
+      final publicRoutes = ['/login', '/on-boarding'];
+      final isPublicRoute = publicRoutes.contains(currentPath);
+
+      if (!loggedIn && !isPublicRoute) return '/on-boarding';
+
+      if (loggedIn && isPublicRoute) return '/home';
+
       return null;
     },
     routes: <RouteBase>[
@@ -60,7 +82,6 @@ final routeProvider = Provider<GoRouter>((ref) {
         path: '/late-and-early',
         builder: (context, state) => const LateAndEarlyManager(),
       ),
-
       GoRoute(
         path: "/product-list-page",
         builder: (context, state) => const ProductListPage(),

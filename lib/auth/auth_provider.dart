@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:px1_mobile/auth/UserAuth.dart';
 import 'package:px1_mobile/core/contants/responseModel.dart';
 import 'package:px1_mobile/core/service/secure_storage_service.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:px1_mobile/core/contants/api.dart';
 
@@ -26,10 +25,10 @@ class AuthNotifier extends StateNotifier<AuthState> {
     : super(
         const AuthState(isLoading: false, userAuth: null, errorAuth: null),
       ) {
-    _loadFormSecureStorage();
+    _loadFromSecureStorage();
   }
 
-  Future<void> _loadFormSecureStorage() async {
+  Future<void> _loadFromSecureStorage() async {
     try {
       final userAuthJson = await _secureStorage.getUserAuth();
       if (userAuthJson != null && userAuthJson.isNotEmpty) {
@@ -49,22 +48,6 @@ class AuthNotifier extends StateNotifier<AuthState> {
       debugPrint('Lỗi khi load từ secure storage: $e');
       logout();
     }
-
-    // final prefs = await SharedPreferences.getInstance();
-    // final userAuth = prefs.getString('userAuth');
-    // if (userAuth != null) {
-    //   dynamic user = jsonDecode(userAuth) as Map<String, dynamic>;
-
-    //   if (!isTokenExpired(user['ttl'].toString())) {
-    //     state = AuthState(
-    //       isLoading: false,
-    //       userAuth: UserAuth.fromJson(user),
-    //       errorAuth: null,
-    //     );
-    //   }
-    // } else {
-    //   logout(); // Hết hạn thì xoá luôn
-    // }
   }
 
   bool isTokenExpired(String ttl) {
@@ -76,7 +59,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
   }
 
   Future<void> login({required String email, required String password}) async {
-    final prefs = await SharedPreferences.getInstance();
+    // final prefs = await SharedPreferences.getInstance();
     state = const AuthState(isLoading: true, userAuth: null);
     // Giả lập gọi API
     await Future.delayed(const Duration(seconds: 2));
@@ -96,22 +79,16 @@ class AuthNotifier extends StateNotifier<AuthState> {
           ttl: userAuth.ttl,
           tokenType: userAuth.tokenType,
         ).toJson();
-        await prefs.setString('userAuth', jsonEncode(fakeUser));
-        await prefs.setString('work_mail', jsonEncode(email.split('.')[0]));
-        final workMail = prefs.getString('work_mail');
-
-        Fluttertoast.showToast(
-          msg: "Đăng nhập thành công",
-          toastLength: Toast.LENGTH_LONG, // hoặc Toast.LENGTH_LONG
-          gravity: ToastGravity.BOTTOM, // vị trí: TOP, CENTER, BOTTOM
-          backgroundColor: Colors.green[100],
-          textColor: Colors.green,
-          fontSize: 16.0,
-        );
-
+        await _secureStorage.saveUserAuth(jsonEncode(fakeUser));
+        await _secureStorage.saveLastMail(jsonEncode(email));
+        // await prefs.setString('userAuth', jsonEncode(fakeUser));
+        // await prefs.setString('work_mail', jsonEncode(email.split('.')[0]));
+        // final workMail = prefs.getString('work_mail');
+        final saveTest = await _secureStorage.getUserAuth();
+        print('💾 Token đã lưu: ${saveTest ?? 'Không có dữ liệu'}...'); // Debug
         state = AuthState(
           userAuth: UserAuth(
-            email: workMail,
+            email: email,
             accesstoken: userAuth.accesstoken,
             refreshtoken: userAuth.refreshtoken,
             ttl: userAuth.ttl,
@@ -164,3 +141,6 @@ class AuthNotifier extends StateNotifier<AuthState> {
 final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
   return AuthNotifier();
 });
+
+
+// 0562301225
